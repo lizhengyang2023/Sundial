@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sundial-research"
+version = "0.1.0"
+description = "Paper-level Sundial training and zero-shot forecasting reproduction"
+requires-python = ">=3.10"
+dependencies = ["torch>=2.3", "numpy>=1.24", "pandas>=2.0", "pyarrow>=21",
+                "huggingface_hub>=0.36", "datasets>=4.2,<5"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

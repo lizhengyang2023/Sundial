@@ -1,0 +1,6 @@
+*cache*/
+dataset/
+prompts/
+.codexignore
+corpus/
+.vscode/

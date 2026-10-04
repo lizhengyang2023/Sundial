@@ -6,10 +6,12 @@ from bisect import bisect_right
 from collections import OrderedDict
 from pathlib import Path
 import json
+import logging
 import os
 import random
 import re
-from typing import Iterator
+import time
+from typing import Callable, Iterator
 
 import numpy as np
 import pandas as pd
@@ -29,6 +31,7 @@ EVAL_NAMES = re.compile(
 META_COLUMNS = {"id", "item_id", "timestamp", "time", "datetime", "time_idx",
                 "ds", "start", "end", "freq", "date", "category",
                 "series_name", "target_name"}
+logger = logging.getLogger(__name__)
 
 
 def _is_eval_name(name: str) -> bool:
@@ -57,8 +60,9 @@ def discover_files(root: Path) -> Iterator[Path]:
             continue
 
 
-def discover_hf_files(root: str, cache_dir: Path) -> Iterator[tuple[str, Path]]:
-    """List Hub files by page; fetch each matching file only when consumed.
+def discover_hf_files(root: str, cache_dir: Path,
+                      progress: Progress | None = None) -> Iterator[tuple[str, Callable[[], Path]]]:
+    """List Hub files by page; defer each download until the file is processed.
 
     root format: hf://datasets/<owner>/<repo>[/<subdirectory>].
     The path prefix is important for UTSD: select UTSD-1G rather than all tiers.
@@ -77,17 +81,22 @@ def discover_hf_files(root: str, cache_dir: Path) -> Iterator[tuple[str, Path]]:
     from huggingface_hub.hf_api import RepoFile
 
     api = HfApi()
-    revision = api.repo_info(repo_id, repo_type="dataset").sha
+    revision = progress.revision if progress and progress.revision else api.repo_info(repo_id, repo_type="dataset").sha
+    if progress and not progress.revision:
+        progress.revision = revision
+        progress.save()
     for entry in api.list_repo_tree(repo_id, path_in_repo=subdirectory,
                                     recursive=True, revision=revision, repo_type="dataset"):
         if not isinstance(entry, RepoFile) or Path(entry.path).suffix.lower() not in SUPPORTED_SUFFIXES:
             continue
         if _is_eval_name(entry.path):
             continue
-        local = hf_hub_download(repo_id=repo_id, filename=entry.path,
-                                repo_type="dataset", revision=revision,
-                                cache_dir=cache_dir)
-        yield entry.path, Path(local)
+        filename = entry.path
+        def download(filename: str = filename) -> Path:
+            return Path(hf_hub_download(repo_id=repo_id, filename=filename,
+                                        repo_type="dataset", revision=revision,
+                                        cache_dir=cache_dir))
+        yield filename, download
 
 
 def extract_univariate(row: dict) -> Iterator[tuple[str, np.ndarray]]:
@@ -151,17 +160,120 @@ def normalize_per_series(values: np.ndarray, train_fraction: float,
     return ((train - mean) / std).astype(np.float32), ((valid - mean) / std).astype(np.float32)
 
 
+class Progress:
+    """Durable state for completed files and shards of one conversion."""
+
+    def __init__(self, dest: Path, settings: dict):
+        self.dest = dest
+        self.path = dest / "progress.json"
+        self.settings = settings
+        self.done: set[str] = set()
+        self.failed: dict[str, str] = {}
+        self.attempts: dict[str, int] = {}
+        self.shards: dict[str, list[dict]] = {"train": [], "validation": []}
+        self.skipped = {"evaluation": 0, "short_or_empty": 0}
+        self.active: dict | None = None
+        self.revision: str | None = None
+        if self.path.exists():
+            data = json.loads(self.path.read_text(encoding="utf-8"))
+            if data.get("settings") != settings:
+                raise ValueError("prepare settings differ from progress.json; use the original settings or a new output directory")
+            self.done = set(data["done"])
+            self.failed = dict(data["failed"])
+            self.attempts = dict(data["attempts"])
+            self.shards = data["shards"]
+            self.skipped = data["skipped"]
+            self.active = data.get("active")
+            self.revision = data.get("revision")
+        else:
+            dest.mkdir(parents=True, exist_ok=True)
+            self.save()
+
+    def save(self) -> None:
+        temporary = self.path.with_suffix(".tmp")
+        temporary.write_text(json.dumps({
+            "settings": self.settings, "revision": self.revision,
+            "done": sorted(self.done), "failed": self.failed,
+            "attempts": self.attempts, "shards": self.shards,
+            "skipped": self.skipped, "active": self.active,
+        }, indent=2, ensure_ascii=False), encoding="utf-8")
+        temporary.replace(self.path)
+
+    def begin(self, relative: str) -> None:
+        self.active = {"file": relative,
+                       "counts": {split: len(items) for split, items in self.shards.items()}}
+        self.save()
+
+    def record_shard(self, split: str, path: str, rows: int) -> None:
+        self.shards[split].append({"path": path, "rows": rows})
+        self.save()
+
+    def mark_done(self, relative: str, skipped: dict[str, int]) -> None:
+        old_skipped = self.skipped
+        old_active = self.active
+        old_failure = self.failed.pop(relative, None)
+        old_attempts = self.attempts.pop(relative, None)
+        self.done.add(relative)
+        self.skipped = {key: self.skipped[key] + skipped[key] for key in self.skipped}
+        self.active = None
+        try:
+            self.save()
+        except Exception:
+            self.done.discard(relative)
+            self.skipped = old_skipped
+            self.active = old_active
+            if old_failure is not None:
+                self.failed[relative] = old_failure
+            if old_attempts is not None:
+                self.attempts[relative] = old_attempts
+            raise
+
+    def mark_failed(self, relative: str, exc: Exception) -> None:
+        self.failed[relative] = f"{type(exc).__name__}: {exc}"
+        self.active = None
+        self.save()
+
+    def rollback(self) -> None:
+        """Remove every shard after the last completed-file boundary."""
+        if self.active is None:
+            return
+        for split, count in self.active["counts"].items():
+            self.shards[split] = self.shards[split][:count]
+        self.active = None
+        self.save()
+        self.cleanup_orphans()
+
+    def cleanup_orphans(self) -> None:
+        """Remove files written after a crash but absent from progress.json."""
+        for split, items in self.shards.items():
+            folder = self.dest / split
+            expected = {Path(item["path"]).name for item in items}
+            missing = [name for name in expected if not (folder / name).is_file()]
+            if missing:
+                raise FileNotFoundError(f"progress.json references missing {split} shard: {missing[0]}")
+            if not folder.exists():
+                continue
+            for path in folder.glob("part-*.parquet"):
+                if path.name not in expected:
+                    path.unlink()
+            for path in folder.glob("part-*.tmp"):
+                path.unlink()
+
+
 class ShardWriter:
     """Shuffle a bounded number of series and write one Parquet shard at a time."""
 
-    def __init__(self, dest: Path, shard_rows: int = 128, seed: int = 42):
+    def __init__(self, dest: Path, shard_rows: int = 128, seed: int = 42,
+                 progress: Progress | None = None):
         if shard_rows < 1:
             raise ValueError("shard_rows must be positive")
         self.dest = dest
         self.shard_rows = shard_rows
-        self.rng = random.Random(seed)
+        self.seed = seed
+        self.progress = progress
         self.buffers: dict[str, list[dict]] = {"train": [], "validation": []}
-        self.shards: dict[str, list[dict]] = {"train": [], "validation": []}
+        self.shards: dict[str, list[dict]] = (progress.shards if progress is not None
+                                              else {"train": [], "validation": []})
 
     def add(self, split: str, series_id: str, values: np.ndarray) -> None:
         self.buffers[split].append({"series_id": series_id, "values": values.tolist()})
@@ -172,7 +284,7 @@ class ShardWriter:
         rows = self.buffers[split]
         if not rows:
             return
-        self.rng.shuffle(rows)
+        random.Random(f"{self.seed}:{split}:{len(self.shards[split])}").shuffle(rows)
         folder = self.dest / split
         folder.mkdir(parents=True, exist_ok=True)
         name = f"part-{len(self.shards[split]):06d}.parquet"
@@ -180,12 +292,19 @@ class ShardWriter:
         temporary = path.with_suffix(".tmp")
         pq.write_table(pa.Table.from_pylist(rows), temporary, compression="zstd")
         temporary.replace(path)
-        self.shards[split].append({"path": f"{split}/{name}", "rows": len(rows)})
+        if self.progress is not None:
+            self.progress.record_shard(split, f"{split}/{name}", len(rows))
+            self.shards = self.progress.shards
+        else:
+            self.shards[split].append({"path": f"{split}/{name}", "rows": len(rows)})
         rows.clear()
 
-    def finalize(self) -> dict:
+    def flush(self) -> None:
         for split in self.buffers:
             self._flush(split)
+
+    def finalize(self) -> dict:
+        self.flush()
         return {"shards": self.shards,
                 "train_series": sum(s["rows"] for s in self.shards["train"]),
                 "validation_series": sum(s["rows"] for s in self.shards["validation"])}
@@ -195,58 +314,99 @@ def convert_source(source: str, input_path: Path | str, output_root: Path,
                    *, shard_rows: int = 128, read_batch_size: int = 64,
                    seed: int = 42,
                    train_fraction: float = 0.9, clip_mad: float = 10.0,
-                   hf_cache: Path = Path(".cache/huggingface")) -> dict:
+                   hf_cache: Path = Path(".cache/huggingface"),
+                   resume: bool = True, max_file_retries: int = 3) -> dict:
     if source not in SOURCES:
         raise ValueError(f"source must be one of {SOURCES}")
-    if not 0 < train_fraction < 1 or shard_rows < 1 or read_batch_size < 1 or clip_mad <= 0:
+    if (not 0 < train_fraction < 1 or shard_rows < 1 or read_batch_size < 1
+            or clip_mad <= 0 or max_file_retries < 1):
         raise ValueError("invalid preprocessing parameters")
     remote = str(input_path).startswith("hf://")
-    if remote:
-        files = discover_hf_files(str(input_path), hf_cache)
-    else:
+    if not remote:
         input_path = Path(input_path)
         if not input_path.exists():
             raise FileNotFoundError(input_path)
         if input_path.is_dir() and output_root.resolve().is_relative_to(input_path.resolve()):
             raise ValueError("output directory must be outside the input directory")
-        files = ((str(path.relative_to(input_path)) if input_path.is_dir() else path.name, path)
-                 for path in discover_files(input_path))
     dest = output_root / source
     if (dest / "manifest.json").exists():
         raise FileExistsError(f"{dest} already has a manifest; use a new output directory")
-    writer = ShardWriter(dest, shard_rows, seed)
-    skipped = {"evaluation": 0, "short_or_empty": 0}
+    if (dest / "progress.json").exists() and not resume:
+        raise FileExistsError(f"{dest} has progress; use a new output directory for a fresh conversion")
+    if not (dest / "progress.json").exists() and dest.exists() and any(dest.iterdir()):
+        raise FileExistsError(f"{dest} has data without progress.json; use a new output directory")
+    settings = {"source": source, "input": str(input_path), "shard_rows": shard_rows,
+                "read_batch_size": read_batch_size, "seed": seed,
+                "train_fraction": train_fraction, "clip_mad": clip_mad}
+    progress = Progress(dest, settings)
+    progress.rollback()
+    progress.cleanup_orphans()
+    writer = ShardWriter(dest, shard_rows, seed, progress)
+    if remote:
+        files = discover_hf_files(str(input_path), hf_cache, progress)
+    else:
+        files = ((str(path.relative_to(input_path)) if input_path.is_dir() else path.name,
+                  lambda path=path: path) for path in discover_files(input_path))
 
     seen_file = False
-    for relative, path in files:
+    seen_names: set[str] = set()
+    for relative, get_path in files:
         seen_file = True
-        if _is_eval_name(relative):
-            skipped["evaluation"] += 1
+        seen_names.add(relative)
+        if relative in progress.done:
             continue
-        for row_number, row in enumerate(iter_rows(path, read_batch_size)):
-            series_id = str(row.get("id", row.get("item_id", row_number)))
-            if _is_eval_name(series_id):
-                skipped["evaluation"] += 1
-                continue
-            for variate, values in extract_univariate(row):
-                prepared = normalize_per_series(values, train_fraction, clip_mad)
-                if prepared is None:
-                    skipped["short_or_empty"] += 1
-                    continue
-                for split, series in zip(("train", "validation"), prepared):
-                    if len(series) < 16:
+        if _is_eval_name(relative):
+            progress.mark_done(relative, {"evaluation": 1, "short_or_empty": 0})
+            continue
+        for attempt in range(max_file_retries):
+            progress.begin(relative)
+            file_skipped = {"evaluation": 0, "short_or_empty": 0}
+            try:
+                path = get_path()
+                for row_number, row in enumerate(iter_rows(path, read_batch_size)):
+                    series_id = str(row.get("id", row.get("item_id", row_number)))
+                    if _is_eval_name(series_id):
+                        file_skipped["evaluation"] += 1
                         continue
-                    writer.add(split, f"{relative}:{series_id}:{row_number}:{variate}", series)
+                    for variate, values in extract_univariate(row):
+                        prepared = normalize_per_series(values, train_fraction, clip_mad)
+                        if prepared is None:
+                            file_skipped["short_or_empty"] += 1
+                            continue
+                        for split, series in zip(("train", "validation"), prepared):
+                            if len(series) >= 16:
+                                writer.add(split, f"{relative}:{series_id}:{row_number}:{variate}", series)
+                writer.flush()
+                progress.mark_done(relative, file_skipped)
+                break
+            except Exception as exc:
+                writer.buffers = {"train": [], "validation": []}
+                progress.rollback()
+                progress.attempts[relative] = progress.attempts.get(relative, 0) + 1
+                progress.mark_failed(relative, exc)
+                if attempt + 1 < max_file_retries:
+                    delay = 2 ** attempt
+                    logger.warning("File %s failed (attempt %d/%d): %s; retrying in %ds",
+                                   relative, attempt + 1, max_file_retries, exc, delay)
+                    time.sleep(delay)
+                else:
+                    logger.error("File %s failed after %d attempts: %s",
+                                 relative, max_file_retries, exc)
+    if progress.done - seen_names:
+        raise ValueError(f"previously completed files are missing from input: {sorted(progress.done - seen_names)[:3]}")
+    if progress.failed:
+        raise RuntimeError(f"{len(progress.failed)} file(s) failed; rerun prepare to retry them; details in {progress.path}")
     manifest = writer.finalize()
     if not seen_file:
         raise ValueError(f"no {sorted(SUPPORTED_SUFFIXES)} files under {input_path}")
     if not manifest["train_series"]:
         raise ValueError("no training series survived conversion")
     manifest.update({"source": source, "seed": seed, "train_fraction": train_fraction,
-                     "clip_mad": clip_mad, "skipped": skipped})
+                     "clip_mad": clip_mad, "skipped": progress.skipped})
     temporary = dest / "manifest.tmp"
     temporary.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     temporary.replace(dest / "manifest.json")
+    progress.path.unlink()
     return manifest
 
 

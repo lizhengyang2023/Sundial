@@ -4,3 +4,5 @@ prompts/
 .codexignore
 corpus/
 .vscode/
+checkpoints/
+.pytest*/

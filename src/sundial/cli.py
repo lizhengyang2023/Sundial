@@ -69,7 +69,8 @@ def prepare(args: argparse.Namespace) -> None:
                               shard_rows=args.shard_rows, read_batch_size=args.read_batch_size,
                               seed=args.seed,
                               train_fraction=args.train_fraction, clip_mad=args.clip_mad,
-                              hf_cache=args.hf_cache)
+                              hf_cache=args.hf_cache, resume=args.resume,
+                              max_file_retries=args.max_file_retries)
     print(json.dumps(manifest, indent=2, ensure_ascii=False))
 
 
@@ -236,6 +237,9 @@ def main() -> None:
     prep.add_argument("--train-fraction", type=float, default=0.9)
     prep.add_argument("--clip-mad", type=float, default=10.0)
     prep.add_argument("--seed", type=int, default=42)
+    prep.add_argument("--max-file-retries", type=int, default=3)
+    prep.add_argument("--no-resume", action="store_false", dest="resume",
+                      help="require a fresh output directory")
     prep.set_defaults(func=prepare)
     fit = sub.add_parser("train", help="train paper-level Sundial on balanced S3 corpus")
     fit.add_argument("--corpus", type=Path, default=Path("corpus"))

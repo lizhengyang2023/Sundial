@@ -345,8 +345,8 @@ def convert_source(source: str, input_path: Path | str, output_root: Path,
     if remote:
         files = discover_hf_files(str(input_path), hf_cache, progress)
     else:
-        files = ((str(path.relative_to(input_path)) if input_path.is_dir() else path.name,
-                  lambda path=path: path) for path in discover_files(input_path))
+        files = ((str(path.relative_to(input_path)) if Path(input_path).is_dir() else path.name,
+                  lambda path=path: path) for path in discover_files(Path(input_path)))
 
     seen_file = False
     seen_names: set[str] = set()

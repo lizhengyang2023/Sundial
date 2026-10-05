@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from contextlib import nullcontext
 from dataclasses import fields
+from torch.amp.grad_scaler import GradScaler
 import json
 from pathlib import Path
 import random
@@ -45,7 +46,7 @@ def _load_config(path: Path | None) -> SundialConfig:
 
 def _checkpoint(path: Path, model: Sundial, optimizer: torch.optim.Optimizer,
                 scheduler: torch.optim.lr_scheduler.LRScheduler,
-                scaler: torch.amp.GradScaler, step: int, data_settings: dict) -> None:
+                scaler: GradScaler, step: int, data_settings: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
     torch.save({"config": model.cfg.to_dict(), "model": model.state_dict(),
@@ -111,7 +112,7 @@ def train(args: argparse.Namespace) -> None:
         scheduler.load_state_dict(state["scheduler"])
     use_amp = device.type == "cuda"
     dtype = torch.bfloat16 if use_amp and torch.cuda.is_bf16_supported() else torch.float16
-    scaler = torch.amp.GradScaler("cuda", enabled=use_amp and dtype == torch.float16)
+    scaler = GradScaler("cuda", enabled=use_amp and dtype == torch.float16)
     if state is not None:
         scaler.load_state_dict(state.get("scaler", {}))
         if "torch_rng" in state:

@@ -2,6 +2,18 @@
 
 from __future__ import annotations
 
+# --- before any huggingface_hub / httpx / requests importing ---
+import os
+os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
+
+try:
+    import truststore
+    truststore.inject_into_ssl()
+except ImportError:
+    import warnings
+    warnings.warn("truststore 未安装，若在内网/代理环境可能继续报 SSL 错误。"
+                  "请运行：pip install truststore")
+
 from bisect import bisect_right
 from collections import OrderedDict
 from pathlib import Path

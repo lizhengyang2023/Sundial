@@ -6,16 +6,9 @@ from __future__ import annotations
 import os
 os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
 
-try:
-    import truststore
-    truststore.inject_into_ssl()
-except ImportError:
-    import warnings
-    warnings.warn("truststore 未安装，若在内网/代理环境可能继续报 SSL 错误。"
-                  "请运行：pip install truststore")
-
 from bisect import bisect_right
 from collections import OrderedDict
+from contextlib import contextmanager
 from pathlib import Path
 import json
 import logging
@@ -46,6 +39,39 @@ META_COLUMNS = {"id", "item_id", "timestamp", "time", "datetime", "time_idx",
 logger = logging.getLogger(__name__)
 
 
+@contextmanager
+def _prepare_lock(dest: Path):
+    """Keep one prepare process at a time in a source directory."""
+    dest.mkdir(parents=True, exist_ok=True)
+    descriptor = os.open(dest / ".prepare.lock", os.O_CREAT | os.O_RDWR, 0o666)
+    try:
+        if os.name == "nt":
+            import msvcrt
+            if os.fstat(descriptor).st_size == 0:
+                os.write(descriptor, b"0")
+            os.lseek(descriptor, 0, os.SEEK_SET)
+            try:
+                msvcrt.locking(descriptor, msvcrt.LK_NBLCK, 1)
+            except OSError as exc:
+                raise RuntimeError(f"another prepare is using {dest}") from exc
+        else:
+            import fcntl
+            try:
+                fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError as exc:
+                raise RuntimeError(f"another prepare is using {dest}") from exc
+        try:
+            yield
+        finally:
+            if os.name == "nt":
+                os.lseek(descriptor, 0, os.SEEK_SET)
+                msvcrt.locking(descriptor, msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(descriptor, fcntl.LOCK_UN)
+    finally:
+        os.close(descriptor)
+
+
 def _is_eval_name(name: str) -> bool:
     return bool(EVAL_NAMES.search(name))
 
@@ -73,7 +99,8 @@ def discover_files(root: Path) -> Iterator[Path]:
 
 
 def discover_hf_files(root: str, cache_dir: Path,
-                      progress: Progress | None = None) -> Iterator[tuple[str, Callable[[], Path]]]:
+                      progress: Progress | None = None,
+                      revision: str | None = None) -> Iterator[tuple[str, Callable[[], Path]]]:
     """List Hub files by page; defer each download until the file is processed.
 
     root format: hf://datasets/<owner>/<repo>[/<subdirectory>].
@@ -90,10 +117,14 @@ def discover_hf_files(root: str, cache_dir: Path,
     # Xet has a separate cache. Keep it alongside the requested Hub cache.
     os.environ.setdefault("HF_XET_CACHE", str((cache_dir / "xet").resolve()))
     from huggingface_hub import HfApi, hf_hub_download
+    from huggingface_hub.errors import HfHubHTTPError
     from huggingface_hub.hf_api import RepoFile
 
     api = HfApi()
-    revision = progress.revision if progress and progress.revision else api.repo_info(repo_id, repo_type="dataset").sha
+    if progress and progress.revision and revision and progress.revision != revision:
+        raise ValueError("requested revision differs from progress.json")
+    revision = (progress.revision if progress and progress.revision else revision
+                or api.repo_info(repo_id, repo_type="dataset").sha)
     if progress and not progress.revision:
         progress.revision = revision
         progress.save()
@@ -105,9 +136,16 @@ def discover_hf_files(root: str, cache_dir: Path,
             continue
         filename = entry.path
         def download(filename: str = filename) -> Path:
-            return Path(hf_hub_download(repo_id=repo_id, filename=filename,
-                                        repo_type="dataset", revision=revision,
-                                        cache_dir=cache_dir))
+            options = {"repo_id": repo_id, "filename": filename,
+                       "repo_type": "dataset", "revision": revision,
+                       "cache_dir": cache_dir}
+            try:
+                return Path(hf_hub_download(**options))
+            except HfHubHTTPError as exc:
+                if exc.response is None or exc.response.status_code != 416:
+                    raise
+                logger.warning("Invalid cached download range for %s; downloading it afresh", filename)
+                return Path(hf_hub_download(**options, force_download=True))
         yield filename, download
 
 
@@ -322,102 +360,167 @@ class ShardWriter:
                 "validation_series": sum(s["rows"] for s in self.shards["validation"])}
 
 
-def convert_source(source: str, input_path: Path | str, output_root: Path,
+def convert_source(source: str, input_path: Path | str | list[str], output_root: Path,
                    *, shard_rows: int = 128, read_batch_size: int = 64,
                    seed: int = 42,
                    train_fraction: float = 0.9, clip_mad: float = 10.0,
                    hf_cache: Path = Path(".cache/huggingface"),
-                   resume: bool = True, max_file_retries: int = 3) -> dict:
+                   resume: bool = True, max_file_retries: int = 3,
+                   revision: str | None = None) -> dict:
+    with _prepare_lock(output_root / source):
+        return _convert_source_locked(
+            source, input_path, output_root, shard_rows=shard_rows,
+            read_batch_size=read_batch_size, seed=seed,
+            train_fraction=train_fraction, clip_mad=clip_mad,
+            hf_cache=hf_cache, resume=resume,
+            max_file_retries=max_file_retries, revision=revision)
+
+
+def _convert_source_locked(source: str, input_path: Path | str | list[str], output_root: Path,
+                           *, shard_rows: int, read_batch_size: int, seed: int,
+                           train_fraction: float, clip_mad: float, hf_cache: Path,
+                           resume: bool, max_file_retries: int,
+                           revision: str | None) -> dict:
     if source not in SOURCES:
         raise ValueError(f"source must be one of {SOURCES}")
     if (not 0 < train_fraction < 1 or shard_rows < 1 or read_batch_size < 1
             or clip_mad <= 0 or max_file_retries < 1):
         raise ValueError("invalid preprocessing parameters")
-    remote = str(input_path).startswith("hf://")
-    if not remote:
-        input_path = Path(input_path)
-        if not input_path.exists():
-            raise FileNotFoundError(input_path)
-        if input_path.is_dir() and output_root.resolve().is_relative_to(input_path.resolve()):
-            raise ValueError("output directory must be outside the input directory")
+    multiple = isinstance(input_path, list)
+    roots = input_path if multiple else [input_path]
+    if not roots:
+        raise ValueError("input directory list is empty")
+    remote = str(roots[0]).startswith("hf://")
+    if any(str(root).startswith("hf://") != remote for root in roots):
+        raise ValueError("all input directories must be local or from one Hugging Face repository")
+    if remote:
+        parsed = [str(root).removeprefix("hf://datasets/").strip("/").split("/") for root in roots]
+        if any(not str(root).startswith("hf://datasets/") or len(parts) < 3
+               or not all(parts[:3]) for root, parts in zip(roots, parsed)) and multiple:
+            raise ValueError("each selected Hugging Face input needs a repository subdirectory")
+        if multiple and len({tuple(parts[:2]) for parts in parsed}) != 1:
+            raise ValueError("selected Hugging Face directories must belong to one repository")
+        names = ["/".join(parts[2:]) for parts in parsed]
+        if multiple and any(a == b or a.startswith(b + "/") or b.startswith(a + "/")
+                            for i, a in enumerate(names) for b in names[i + 1:]):
+            raise ValueError("selected directories overlap")
+    else:
+        roots = [Path(root).resolve() for root in roots] if multiple else [Path(roots[0])]
+        for root in roots:
+            if not root.exists():
+                raise FileNotFoundError(root)
+            if root.is_dir() and output_root.resolve().is_relative_to(root.resolve()):
+                raise ValueError("output directory must be outside the input directory")
+        if multiple and any(a == b or a.is_relative_to(b) or b.is_relative_to(a)
+                            for i, a in enumerate(roots) for b in roots[i + 1:]):
+            raise ValueError("selected directories overlap")
+    if revision is not None and not remote:
+        raise ValueError("revision can only be used with Hugging Face inputs")
     dest = output_root / source
-    if (dest / "manifest.json").exists():
+    manifest_path = dest / "manifest.json"
+    progress_path = dest / "progress.json"
+    if manifest_path.exists() and not progress_path.exists():
         raise FileExistsError(f"{dest} already has a manifest; use a new output directory")
-    if (dest / "progress.json").exists() and not resume:
+    if progress_path.exists() and not resume:
         raise FileExistsError(f"{dest} has progress; use a new output directory for a fresh conversion")
-    if not (dest / "progress.json").exists() and dest.exists() and any(dest.iterdir()):
+    if not progress_path.exists() and any(path.name != ".prepare.lock" for path in dest.iterdir()):
         raise FileExistsError(f"{dest} has data without progress.json; use a new output directory")
-    settings = {"source": source, "input": str(input_path), "shard_rows": shard_rows,
+    settings = {"source": source, "shard_rows": shard_rows,
                 "read_batch_size": read_batch_size, "seed": seed,
                 "train_fraction": train_fraction, "clip_mad": clip_mad}
+    if multiple:
+        settings.update({"inputs": [str(root) for root in roots], "revision": revision})
+    else:
+        settings["input"] = str(roots[0])
     progress = Progress(dest, settings)
     progress.rollback()
     progress.cleanup_orphans()
+    if manifest_path.exists():
+        stale_path = dest / f"manifest.stale.{manifest_path.stat().st_mtime_ns}.json"
+        if stale_path.exists():
+            raise FileExistsError(f"cannot preserve old manifest; {stale_path} already exists")
+        manifest_path.replace(stale_path)
+        logger.warning("Preserved stale manifest at %s; conversion remains incomplete", stale_path)
     writer = ShardWriter(dest, shard_rows, seed, progress)
-    if remote:
-        files = discover_hf_files(str(input_path), hf_cache, progress)
-    else:
-        files = ((str(path.relative_to(input_path)) if Path(input_path).is_dir() else path.name,
-                  lambda path=path: path) for path in discover_files(Path(input_path)))
-
     seen_file = False
     seen_names: set[str] = set()
-    for relative, get_path in files:
-        seen_file = True
-        seen_names.add(relative)
-        if relative in progress.done:
-            continue
-        if _is_eval_name(relative):
-            progress.mark_done(relative, {"evaluation": 1, "short_or_empty": 0})
-            continue
-        for attempt in range(max_file_retries):
-            progress.begin(relative)
-            file_skipped = {"evaluation": 0, "short_or_empty": 0}
-            try:
-                path = get_path()
-                for row_number, row in enumerate(iter_rows(path, read_batch_size)):
-                    series_id = str(row.get("id", row.get("item_id", row_number)))
-                    if _is_eval_name(series_id):
-                        file_skipped["evaluation"] += 1
-                        continue
-                    for variate, values in extract_univariate(row):
-                        prepared = normalize_per_series(values, train_fraction, clip_mad)
-                        if prepared is None:
-                            file_skipped["short_or_empty"] += 1
+    for root_index, root in enumerate(roots):
+        if remote:
+            files = discover_hf_files(str(root), hf_cache, progress, revision)
+        else:
+            files = ((f"{root_index}:{path.relative_to(root) if Path(root).is_dir() else path.name}" if multiple else
+                      str(path.relative_to(root)) if Path(root).is_dir() else path.name,
+                      lambda path=path: path) for path in discover_files(Path(root)))
+        root_files = 0
+        for relative, get_path in files:
+            root_files += 1
+            if relative in seen_names:
+                raise ValueError(f"duplicate input file: {relative}")
+            seen_file = True
+            seen_names.add(relative)
+            if relative in progress.done:
+                continue
+            if _is_eval_name(relative):
+                progress.mark_done(relative, {"evaluation": 1, "short_or_empty": 0})
+                continue
+            for attempt in range(max_file_retries):
+                progress.begin(relative)
+                file_skipped = {"evaluation": 0, "short_or_empty": 0}
+                try:
+                    path = get_path()
+                    for row_number, row in enumerate(iter_rows(path, read_batch_size)):
+                        series_id = str(row.get("id", row.get("item_id", row_number)))
+                        if _is_eval_name(series_id):
+                            file_skipped["evaluation"] += 1
                             continue
-                        for split, series in zip(("train", "validation"), prepared):
-                            if len(series) >= 16:
-                                writer.add(split, f"{relative}:{series_id}:{row_number}:{variate}", series)
-                writer.flush()
-                progress.mark_done(relative, file_skipped)
-                break
-            except Exception as exc:
-                writer.buffers = {"train": [], "validation": []}
-                progress.rollback()
-                progress.attempts[relative] = progress.attempts.get(relative, 0) + 1
-                progress.mark_failed(relative, exc)
-                if attempt + 1 < max_file_retries:
-                    delay = 2 ** attempt
-                    logger.warning("File %s failed (attempt %d/%d): %s; retrying in %ds",
-                                   relative, attempt + 1, max_file_retries, exc, delay)
-                    time.sleep(delay)
-                else:
-                    logger.error("File %s failed after %d attempts: %s",
-                                 relative, max_file_retries, exc)
+                        for variate, values in extract_univariate(row):
+                            prepared = normalize_per_series(values, train_fraction, clip_mad)
+                            if prepared is None:
+                                file_skipped["short_or_empty"] += 1
+                                continue
+                            for split, series in zip(("train", "validation"), prepared):
+                                if len(series) >= 16:
+                                    writer.add(split, f"{relative}:{series_id}:{row_number}:{variate}", series)
+                    writer.flush()
+                    progress.mark_done(relative, file_skipped)
+                    break
+                except Exception as exc:
+                    writer.buffers = {"train": [], "validation": []}
+                    progress.rollback()
+                    progress.attempts[relative] = progress.attempts.get(relative, 0) + 1
+                    progress.mark_failed(relative, exc)
+                    if attempt + 1 < max_file_retries:
+                        delay = 2 ** attempt
+                        logger.warning("File %s failed (attempt %d/%d): %s; retrying in %ds",
+                                       relative, attempt + 1, max_file_retries, exc, delay)
+                        time.sleep(delay)
+                    else:
+                        logger.error("File %s failed after %d attempts: %s",
+                                     relative, max_file_retries, exc)
+        if multiple and not root_files:
+            raise ValueError(f"no {sorted(SUPPORTED_SUFFIXES)} files under selected input {root}")
     if progress.done - seen_names:
         raise ValueError(f"previously completed files are missing from input: {sorted(progress.done - seen_names)[:3]}")
     if progress.failed:
         raise RuntimeError(f"{len(progress.failed)} file(s) failed; rerun prepare to retry them; details in {progress.path}")
+    if progress.done != seen_names:
+        raise RuntimeError("some discovered files were not completed; manifest was not written")
     manifest = writer.finalize()
     if not seen_file:
         raise ValueError(f"no {sorted(SUPPORTED_SUFFIXES)} files under {input_path}")
     if not manifest["train_series"]:
         raise ValueError("no training series survived conversion")
-    manifest.update({"source": source, "seed": seed, "train_fraction": train_fraction,
+    manifest.update({"source": source,
+                     "revision": progress.revision, "source_files": len(seen_names),
+                     "seed": seed, "train_fraction": train_fraction,
                      "clip_mad": clip_mad, "skipped": progress.skipped})
+    if multiple:
+        manifest["inputs"] = [str(root) for root in roots]
+    else:
+        manifest["input"] = str(roots[0])
     temporary = dest / "manifest.tmp"
     temporary.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    temporary.replace(dest / "manifest.json")
+    temporary.replace(manifest_path)
     progress.path.unlink()
     return manifest
 

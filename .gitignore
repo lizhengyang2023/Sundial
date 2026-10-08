@@ -2,6 +2,7 @@
 dataset/
 prompts/
 .codexignore
+.cursorignore
 corpus/
 .vscode/
 checkpoints/

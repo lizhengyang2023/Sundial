@@ -1,0 +1,3348 @@
+{
+  "generated_at_utc": "2026-10-06T14:46:29.329528+00:00",
+  "inventory_file": "results\\data_inventory.json",
+  "utsd_reference_time_steps": 847698401,
+  "target_time_steps": 850000000,
+  "assumed_actual_fraction": 0.75,
+  "selection_note": "The 75% factor is applied to both sources as requested. Directories excluded by prepare's evaluation-name filter are listed but not selected. Estimates do not account for individual series discarded during conversion.",
+  "sources": {
+    "chronos": {
+      "repository": "autogluon/chronos_datasets",
+      "revision": "eeecad0b82a8c237e212ce6f8d1abecb513e2cec",
+      "directories_sorted_by_estimated_time_steps": [
+        {
+          "path": "monash_m1_yearly",
+          "estimated_total_time_steps": 4515,
+          "assumed_actual_time_steps_75pct": 3386,
+          "estimated_channels": 181,
+          "size_mb": 0.031,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_cif_2016",
+          "estimated_total_time_steps": 7108,
+          "assumed_actual_time_steps_75pct": 5331,
+          "estimated_channels": 72,
+          "size_mb": 0.071,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m1_quarterly",
+          "estimated_total_time_steps": 9944,
+          "assumed_actual_time_steps_75pct": 7458,
+          "estimated_channels": 203,
+          "size_mb": 0.048,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_nn5_weekly",
+          "estimated_total_time_steps": 12543,
+          "assumed_actual_time_steps_75pct": 9407,
+          "estimated_channels": 111,
+          "size_mb": 0.065,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_tourism_yearly",
+          "estimated_total_time_steps": 12757,
+          "assumed_actual_time_steps_75pct": 9568,
+          "estimated_channels": 518,
+          "size_mb": 0.081,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m3_yearly",
+          "estimated_total_time_steps": 18319,
+          "assumed_actual_time_steps_75pct": 13739,
+          "estimated_channels": 645,
+          "size_mb": 0.1,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_saugeenday",
+          "estimated_total_time_steps": 23741,
+          "assumed_actual_time_steps_75pct": 17806,
+          "estimated_channels": 1,
+          "size_mb": 0.223,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m3_quarterly",
+          "estimated_total_time_steps": 37004,
+          "assumed_actual_time_steps_75pct": 27753,
+          "estimated_channels": 756,
+          "size_mb": 0.189,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_tourism_quarterly",
+          "estimated_total_time_steps": 42544,
+          "assumed_actual_time_steps_75pct": 31908,
+          "estimated_channels": 427,
+          "size_mb": 0.177,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "uber_tlc_daily",
+          "estimated_total_time_steps": 47422,
+          "assumed_actual_time_steps_75pct": 35567,
+          "estimated_channels": 262,
+          "size_mb": 0.085,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_electricity_weekly",
+          "estimated_total_time_steps": 50076,
+          "assumed_actual_time_steps_75pct": 37557,
+          "estimated_channels": 321,
+          "size_mb": 0.334,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m1_monthly",
+          "estimated_total_time_steps": 55998,
+          "assumed_actual_time_steps_75pct": 41999,
+          "estimated_channels": 617,
+          "size_mb": 0.244,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_covid_deaths",
+          "estimated_total_time_steps": 56392,
+          "assumed_actual_time_steps_75pct": 42294,
+          "estimated_channels": 266,
+          "size_mb": 0.059,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "exchange_rate",
+          "estimated_total_time_steps": 60704,
+          "assumed_actual_time_steps_75pct": 45528,
+          "estimated_channels": 8,
+          "size_mb": 0.402,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_hospital",
+          "estimated_total_time_steps": 64428,
+          "assumed_actual_time_steps_75pct": 48321,
+          "estimated_channels": 767,
+          "size_mb": 0.117,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_fred_md",
+          "estimated_total_time_steps": 77896,
+          "assumed_actual_time_steps_75pct": 58422,
+          "estimated_channels": 107,
+          "size_mb": 0.412,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "nn5",
+          "estimated_total_time_steps": 87801,
+          "assumed_actual_time_steps_75pct": 65851,
+          "estimated_channels": 111,
+          "size_mb": 0.203,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_tourism_monthly",
+          "estimated_total_time_steps": 109280,
+          "assumed_actual_time_steps_75pct": 81960,
+          "estimated_channels": 366,
+          "size_mb": 0.335,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "wind_farms_daily",
+          "estimated_total_time_steps": 119549,
+          "assumed_actual_time_steps_75pct": 89662,
+          "estimated_channels": 337,
+          "size_mb": 0.599,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_car_parts",
+          "estimated_total_time_steps": 136374,
+          "assumed_actual_time_steps_75pct": 102281,
+          "estimated_channels": 2674,
+          "size_mb": 0.07,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m3_monthly",
+          "estimated_total_time_steps": 167562,
+          "assumed_actual_time_steps_75pct": 125672,
+          "estimated_channels": 1428,
+          "size_mb": 0.59,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_weekly",
+          "estimated_total_time_steps": 371579,
+          "assumed_actual_time_steps_75pct": 278684,
+          "estimated_channels": 359,
+          "size_mb": 2.557,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_hourly",
+          "estimated_total_time_steps": 373372,
+          "assumed_actual_time_steps_75pct": 280029,
+          "estimated_channels": 414,
+          "size_mb": 1.337,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_yearly",
+          "estimated_total_time_steps": 858458,
+          "assumed_actual_time_steps_75pct": 643844,
+          "estimated_channels": 23000,
+          "size_mb": 5.489,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "uber_tlc_hourly",
+          "estimated_total_time_steps": 1138128,
+          "assumed_actual_time_steps_75pct": 853596,
+          "estimated_channels": 262,
+          "size_mb": 1.879,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_australian_electricity",
+          "estimated_total_time_steps": 1155264,
+          "assumed_actual_time_steps_75pct": 866448,
+          "estimated_channels": 5,
+          "size_mb": 16.856,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "ercot",
+          "estimated_total_time_steps": 1238976,
+          "assumed_actual_time_steps_75pct": 929232,
+          "estimated_channels": 8,
+          "size_mb": 14.504,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_rideshare",
+          "estimated_total_time_steps": 1265940,
+          "assumed_actual_time_steps_75pct": 949455,
+          "estimated_channels": 2340,
+          "size_mb": 0.782,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "taxi_1h",
+          "estimated_total_time_steps": 1794292,
+          "assumed_actual_time_steps_75pct": 1345719,
+          "estimated_channels": 2428,
+          "size_mb": 2.265,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_quarterly",
+          "estimated_total_time_steps": 2406108,
+          "assumed_actual_time_steps_75pct": 1804581,
+          "estimated_channels": 24000,
+          "size_mb": 13.27,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "wind_farms_hourly",
+          "estimated_total_time_steps": 2869414,
+          "assumed_actual_time_steps_75pct": 2152061,
+          "estimated_channels": 337,
+          "size_mb": 12.333,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_kdd_cup_2018",
+          "estimated_total_time_steps": 2942364,
+          "assumed_actual_time_steps_75pct": 2206773,
+          "estimated_channels": 270,
+          "size_mb": 8.78,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_pedestrian_counts",
+          "estimated_total_time_steps": 3132346,
+          "assumed_actual_time_steps_75pct": 2349260,
+          "estimated_channels": 66,
+          "size_mb": 12.377,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "taxi_30min",
+          "estimated_total_time_steps": 3589798,
+          "assumed_actual_time_steps_75pct": 2692349,
+          "estimated_channels": 2428,
+          "size_mb": 4.541,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_electricity_hourly",
+          "estimated_total_time_steps": 8443584,
+          "assumed_actual_time_steps_75pct": 6332688,
+          "estimated_channels": 321,
+          "size_mb": 31.139,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_daily",
+          "estimated_total_time_steps": 10023836,
+          "assumed_actual_time_steps_75pct": 7517877,
+          "estimated_channels": 4227,
+          "size_mb": 65.547,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_monthly",
+          "estimated_total_time_steps": 11246411,
+          "assumed_actual_time_steps_75pct": 8434808,
+          "estimated_channels": 48000,
+          "size_mb": 52.772,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_traffic",
+          "estimated_total_time_steps": 15122928,
+          "assumed_actual_time_steps_75pct": 11342196,
+          "estimated_channels": 862,
+          "size_mb": 52.749,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_temperature_rain",
+          "estimated_total_time_steps": 23252200,
+          "assumed_actual_time_steps_75pct": 17439150,
+          "estimated_channels": 32072,
+          "size_mb": 44.968,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "dominick",
+          "estimated_total_time_steps": 29652492,
+          "assumed_actual_time_steps_75pct": 22239369,
+          "estimated_channels": 100014,
+          "size_mb": 42.29,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "mexico_city_bikes",
+          "estimated_total_time_steps": 38687004,
+          "assumed_actual_time_steps_75pct": 29015253,
+          "estimated_channels": 494,
+          "size_mb": 103.207,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "electricity_15min",
+          "estimated_total_time_steps": 41936458,
+          "assumed_actual_time_steps_75pct": 31452344,
+          "estimated_channels": 370,
+          "size_mb": 284.497,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_weather",
+          "estimated_total_time_steps": 43032000,
+          "assumed_actual_time_steps_75pct": 32274000,
+          "estimated_channels": 3010,
+          "size_mb": 133.164,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "solar_1h",
+          "estimated_total_time_steps": 45254160,
+          "assumed_actual_time_steps_75pct": 33940620,
+          "estimated_channels": 5166,
+          "size_mb": 124.515,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m5",
+          "estimated_total_time_steps": 47649940,
+          "assumed_actual_time_steps_75pct": 35737455,
+          "estimated_channels": 30490,
+          "size_mb": 78.063,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_london_smart_meters",
+          "estimated_total_time_steps": 165579625,
+          "assumed_actual_time_steps_75pct": 124184719,
+          "estimated_channels": 5425,
+          "size_mb": 597.389,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "ushcn_daily",
+          "estimated_total_time_steps": 237694427,
+          "assumed_actual_time_steps_75pct": 178270820,
+          "estimated_channels": 6098,
+          "size_mb": 221.09,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "wiki_daily_100k",
+          "estimated_total_time_steps": 279834446,
+          "assumed_actual_time_steps_75pct": 209875835,
+          "estimated_channels": 102092,
+          "size_mb": 592.554,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_weekly",
+          "estimated_total_time_steps": 469604562,
+          "assumed_actual_time_steps_75pct": 352203422,
+          "estimated_channels": 225014,
+          "size_mb": 2243.012,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "solar",
+          "estimated_total_time_steps": 541647449,
+          "assumed_actual_time_steps_75pct": 406235587,
+          "estimated_channels": 5153,
+          "size_mb": 1507.925,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/2m_temperature",
+          "estimated_total_time_steps": 716556443,
+          "assumed_actual_time_steps_75pct": 537417332,
+          "estimated_channels": 2044,
+          "size_mb": 7276.397,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/10m_u_component_of_wind",
+          "estimated_total_time_steps": 718471278,
+          "assumed_actual_time_steps_75pct": 538853459,
+          "estimated_channels": 2049,
+          "size_mb": 7292.846,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/10m_v_component_of_wind",
+          "estimated_total_time_steps": 718687518,
+          "assumed_actual_time_steps_75pct": 539015639,
+          "estimated_channels": 2050,
+          "size_mb": 7292.353,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/toa_incident_solar_radiation",
+          "estimated_total_time_steps": 726229568,
+          "assumed_actual_time_steps_75pct": 544672176,
+          "estimated_channels": 2071,
+          "size_mb": 6057.953,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/total_cloud_cover",
+          "estimated_total_time_steps": 797372934,
+          "assumed_actual_time_steps_75pct": 598029701,
+          "estimated_channels": 2274,
+          "size_mb": 6628.258,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/total_precipitation",
+          "estimated_total_time_steps": 814139317,
+          "assumed_actual_time_steps_75pct": 610604488,
+          "estimated_channels": 2322,
+          "size_mb": 6473.161,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "training_corpus/kernel_synth_1m",
+          "estimated_total_time_steps": 1023990726,
+          "assumed_actual_time_steps_75pct": 767993045,
+          "estimated_channels": 999991,
+          "size_mb": 8313.239,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_daily",
+          "estimated_total_time_steps": 3260070083,
+          "assumed_actual_time_steps_75pct": 2445052562,
+          "estimated_channels": 223140,
+          "size_mb": 18924.393,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/temperature",
+          "estimated_total_time_steps": 9297580318,
+          "assumed_actual_time_steps_75pct": 6973185239,
+          "estimated_channels": 26516,
+          "size_mb": 94081.539,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/v_component_of_wind",
+          "estimated_total_time_steps": 9346841789,
+          "assumed_actual_time_steps_75pct": 7010131342,
+          "estimated_channels": 26657,
+          "size_mb": 94800.557,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/u_component_of_wind",
+          "estimated_total_time_steps": 9348388879,
+          "assumed_actual_time_steps_75pct": 7011291659,
+          "estimated_channels": 26661,
+          "size_mb": 94801.499,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/relative_humidity",
+          "estimated_total_time_steps": 9370960809,
+          "assumed_actual_time_steps_75pct": 7028220607,
+          "estimated_channels": 26725,
+          "size_mb": 94728.788,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/vorticity",
+          "estimated_total_time_steps": 9419713925,
+          "assumed_actual_time_steps_75pct": 7064785444,
+          "estimated_channels": 26864,
+          "size_mb": 94720.961,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/geopotential",
+          "estimated_total_time_steps": 9514129817,
+          "assumed_actual_time_steps_75pct": 7135597363,
+          "estimated_channels": 27134,
+          "size_mb": 87305.565,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/potential_vorticity",
+          "estimated_total_time_steps": 9728220365,
+          "assumed_actual_time_steps_75pct": 7296165274,
+          "estimated_channels": 27744,
+          "size_mb": 92426.24,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weatherbench_hourly/specific_humidity",
+          "estimated_total_time_steps": 10509082668,
+          "assumed_actual_time_steps_75pct": 7881812001,
+          "estimated_channels": 29971,
+          "size_mb": 85139.896,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "training_corpus/tsmixup_10m",
+          "estimated_total_time_steps": 10921014535,
+          "assumed_actual_time_steps_75pct": 8190760901,
+          "estimated_channels": 9985007,
+          "size_mb": 82189.59,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        }
+      ],
+      "selection": {
+        "method": "ascending_estimated_steps_accumulate_then_choose_closer_side_of_target",
+        "eligible_directories": 60,
+        "selected_directories": [
+          {
+            "path": "monash_m1_yearly",
+            "estimated_total_time_steps": 4515,
+            "assumed_actual_time_steps_75pct": 3386,
+            "estimated_channels": 181,
+            "size_mb": 0.031,
+            "cumulative_assumed_actual_time_steps": 3386
+          },
+          {
+            "path": "monash_cif_2016",
+            "estimated_total_time_steps": 7108,
+            "assumed_actual_time_steps_75pct": 5331,
+            "estimated_channels": 72,
+            "size_mb": 0.071,
+            "cumulative_assumed_actual_time_steps": 8717
+          },
+          {
+            "path": "monash_m1_quarterly",
+            "estimated_total_time_steps": 9944,
+            "assumed_actual_time_steps_75pct": 7458,
+            "estimated_channels": 203,
+            "size_mb": 0.048,
+            "cumulative_assumed_actual_time_steps": 16175
+          },
+          {
+            "path": "monash_nn5_weekly",
+            "estimated_total_time_steps": 12543,
+            "assumed_actual_time_steps_75pct": 9407,
+            "estimated_channels": 111,
+            "size_mb": 0.065,
+            "cumulative_assumed_actual_time_steps": 25582
+          },
+          {
+            "path": "monash_tourism_yearly",
+            "estimated_total_time_steps": 12757,
+            "assumed_actual_time_steps_75pct": 9568,
+            "estimated_channels": 518,
+            "size_mb": 0.081,
+            "cumulative_assumed_actual_time_steps": 35150
+          },
+          {
+            "path": "monash_m3_yearly",
+            "estimated_total_time_steps": 18319,
+            "assumed_actual_time_steps_75pct": 13739,
+            "estimated_channels": 645,
+            "size_mb": 0.1,
+            "cumulative_assumed_actual_time_steps": 48889
+          },
+          {
+            "path": "monash_saugeenday",
+            "estimated_total_time_steps": 23741,
+            "assumed_actual_time_steps_75pct": 17806,
+            "estimated_channels": 1,
+            "size_mb": 0.223,
+            "cumulative_assumed_actual_time_steps": 66695
+          },
+          {
+            "path": "monash_m3_quarterly",
+            "estimated_total_time_steps": 37004,
+            "assumed_actual_time_steps_75pct": 27753,
+            "estimated_channels": 756,
+            "size_mb": 0.189,
+            "cumulative_assumed_actual_time_steps": 94448
+          },
+          {
+            "path": "monash_tourism_quarterly",
+            "estimated_total_time_steps": 42544,
+            "assumed_actual_time_steps_75pct": 31908,
+            "estimated_channels": 427,
+            "size_mb": 0.177,
+            "cumulative_assumed_actual_time_steps": 126356
+          },
+          {
+            "path": "uber_tlc_daily",
+            "estimated_total_time_steps": 47422,
+            "assumed_actual_time_steps_75pct": 35567,
+            "estimated_channels": 262,
+            "size_mb": 0.085,
+            "cumulative_assumed_actual_time_steps": 161923
+          },
+          {
+            "path": "monash_m1_monthly",
+            "estimated_total_time_steps": 55998,
+            "assumed_actual_time_steps_75pct": 41999,
+            "estimated_channels": 617,
+            "size_mb": 0.244,
+            "cumulative_assumed_actual_time_steps": 203922
+          },
+          {
+            "path": "monash_covid_deaths",
+            "estimated_total_time_steps": 56392,
+            "assumed_actual_time_steps_75pct": 42294,
+            "estimated_channels": 266,
+            "size_mb": 0.059,
+            "cumulative_assumed_actual_time_steps": 246216
+          },
+          {
+            "path": "monash_hospital",
+            "estimated_total_time_steps": 64428,
+            "assumed_actual_time_steps_75pct": 48321,
+            "estimated_channels": 767,
+            "size_mb": 0.117,
+            "cumulative_assumed_actual_time_steps": 294537
+          },
+          {
+            "path": "monash_fred_md",
+            "estimated_total_time_steps": 77896,
+            "assumed_actual_time_steps_75pct": 58422,
+            "estimated_channels": 107,
+            "size_mb": 0.412,
+            "cumulative_assumed_actual_time_steps": 352959
+          },
+          {
+            "path": "nn5",
+            "estimated_total_time_steps": 87801,
+            "assumed_actual_time_steps_75pct": 65851,
+            "estimated_channels": 111,
+            "size_mb": 0.203,
+            "cumulative_assumed_actual_time_steps": 418810
+          },
+          {
+            "path": "monash_tourism_monthly",
+            "estimated_total_time_steps": 109280,
+            "assumed_actual_time_steps_75pct": 81960,
+            "estimated_channels": 366,
+            "size_mb": 0.335,
+            "cumulative_assumed_actual_time_steps": 500770
+          },
+          {
+            "path": "wind_farms_daily",
+            "estimated_total_time_steps": 119549,
+            "assumed_actual_time_steps_75pct": 89662,
+            "estimated_channels": 337,
+            "size_mb": 0.599,
+            "cumulative_assumed_actual_time_steps": 590432
+          },
+          {
+            "path": "monash_car_parts",
+            "estimated_total_time_steps": 136374,
+            "assumed_actual_time_steps_75pct": 102281,
+            "estimated_channels": 2674,
+            "size_mb": 0.07,
+            "cumulative_assumed_actual_time_steps": 692713
+          },
+          {
+            "path": "monash_m3_monthly",
+            "estimated_total_time_steps": 167562,
+            "assumed_actual_time_steps_75pct": 125672,
+            "estimated_channels": 1428,
+            "size_mb": 0.59,
+            "cumulative_assumed_actual_time_steps": 818385
+          },
+          {
+            "path": "m4_weekly",
+            "estimated_total_time_steps": 371579,
+            "assumed_actual_time_steps_75pct": 278684,
+            "estimated_channels": 359,
+            "size_mb": 2.557,
+            "cumulative_assumed_actual_time_steps": 1097069
+          },
+          {
+            "path": "m4_hourly",
+            "estimated_total_time_steps": 373372,
+            "assumed_actual_time_steps_75pct": 280029,
+            "estimated_channels": 414,
+            "size_mb": 1.337,
+            "cumulative_assumed_actual_time_steps": 1377098
+          },
+          {
+            "path": "m4_yearly",
+            "estimated_total_time_steps": 858458,
+            "assumed_actual_time_steps_75pct": 643844,
+            "estimated_channels": 23000,
+            "size_mb": 5.489,
+            "cumulative_assumed_actual_time_steps": 2020942
+          },
+          {
+            "path": "uber_tlc_hourly",
+            "estimated_total_time_steps": 1138128,
+            "assumed_actual_time_steps_75pct": 853596,
+            "estimated_channels": 262,
+            "size_mb": 1.879,
+            "cumulative_assumed_actual_time_steps": 2874538
+          },
+          {
+            "path": "ercot",
+            "estimated_total_time_steps": 1238976,
+            "assumed_actual_time_steps_75pct": 929232,
+            "estimated_channels": 8,
+            "size_mb": 14.504,
+            "cumulative_assumed_actual_time_steps": 3803770
+          },
+          {
+            "path": "monash_rideshare",
+            "estimated_total_time_steps": 1265940,
+            "assumed_actual_time_steps_75pct": 949455,
+            "estimated_channels": 2340,
+            "size_mb": 0.782,
+            "cumulative_assumed_actual_time_steps": 4753225
+          },
+          {
+            "path": "taxi_1h",
+            "estimated_total_time_steps": 1794292,
+            "assumed_actual_time_steps_75pct": 1345719,
+            "estimated_channels": 2428,
+            "size_mb": 2.265,
+            "cumulative_assumed_actual_time_steps": 6098944
+          },
+          {
+            "path": "m4_quarterly",
+            "estimated_total_time_steps": 2406108,
+            "assumed_actual_time_steps_75pct": 1804581,
+            "estimated_channels": 24000,
+            "size_mb": 13.27,
+            "cumulative_assumed_actual_time_steps": 7903525
+          },
+          {
+            "path": "wind_farms_hourly",
+            "estimated_total_time_steps": 2869414,
+            "assumed_actual_time_steps_75pct": 2152061,
+            "estimated_channels": 337,
+            "size_mb": 12.333,
+            "cumulative_assumed_actual_time_steps": 10055586
+          },
+          {
+            "path": "monash_kdd_cup_2018",
+            "estimated_total_time_steps": 2942364,
+            "assumed_actual_time_steps_75pct": 2206773,
+            "estimated_channels": 270,
+            "size_mb": 8.78,
+            "cumulative_assumed_actual_time_steps": 12262359
+          },
+          {
+            "path": "monash_pedestrian_counts",
+            "estimated_total_time_steps": 3132346,
+            "assumed_actual_time_steps_75pct": 2349260,
+            "estimated_channels": 66,
+            "size_mb": 12.377,
+            "cumulative_assumed_actual_time_steps": 14611619
+          },
+          {
+            "path": "taxi_30min",
+            "estimated_total_time_steps": 3589798,
+            "assumed_actual_time_steps_75pct": 2692349,
+            "estimated_channels": 2428,
+            "size_mb": 4.541,
+            "cumulative_assumed_actual_time_steps": 17303968
+          },
+          {
+            "path": "m4_daily",
+            "estimated_total_time_steps": 10023836,
+            "assumed_actual_time_steps_75pct": 7517877,
+            "estimated_channels": 4227,
+            "size_mb": 65.547,
+            "cumulative_assumed_actual_time_steps": 24821845
+          },
+          {
+            "path": "m4_monthly",
+            "estimated_total_time_steps": 11246411,
+            "assumed_actual_time_steps_75pct": 8434808,
+            "estimated_channels": 48000,
+            "size_mb": 52.772,
+            "cumulative_assumed_actual_time_steps": 33256653
+          },
+          {
+            "path": "monash_temperature_rain",
+            "estimated_total_time_steps": 23252200,
+            "assumed_actual_time_steps_75pct": 17439150,
+            "estimated_channels": 32072,
+            "size_mb": 44.968,
+            "cumulative_assumed_actual_time_steps": 50695803
+          },
+          {
+            "path": "dominick",
+            "estimated_total_time_steps": 29652492,
+            "assumed_actual_time_steps_75pct": 22239369,
+            "estimated_channels": 100014,
+            "size_mb": 42.29,
+            "cumulative_assumed_actual_time_steps": 72935172
+          },
+          {
+            "path": "mexico_city_bikes",
+            "estimated_total_time_steps": 38687004,
+            "assumed_actual_time_steps_75pct": 29015253,
+            "estimated_channels": 494,
+            "size_mb": 103.207,
+            "cumulative_assumed_actual_time_steps": 101950425
+          },
+          {
+            "path": "solar_1h",
+            "estimated_total_time_steps": 45254160,
+            "assumed_actual_time_steps_75pct": 33940620,
+            "estimated_channels": 5166,
+            "size_mb": 124.515,
+            "cumulative_assumed_actual_time_steps": 135891045
+          },
+          {
+            "path": "m5",
+            "estimated_total_time_steps": 47649940,
+            "assumed_actual_time_steps_75pct": 35737455,
+            "estimated_channels": 30490,
+            "size_mb": 78.063,
+            "cumulative_assumed_actual_time_steps": 171628500
+          },
+          {
+            "path": "monash_london_smart_meters",
+            "estimated_total_time_steps": 165579625,
+            "assumed_actual_time_steps_75pct": 124184719,
+            "estimated_channels": 5425,
+            "size_mb": 597.389,
+            "cumulative_assumed_actual_time_steps": 295813219
+          },
+          {
+            "path": "ushcn_daily",
+            "estimated_total_time_steps": 237694427,
+            "assumed_actual_time_steps_75pct": 178270820,
+            "estimated_channels": 6098,
+            "size_mb": 221.09,
+            "cumulative_assumed_actual_time_steps": 474084039
+          },
+          {
+            "path": "wiki_daily_100k",
+            "estimated_total_time_steps": 279834446,
+            "assumed_actual_time_steps_75pct": 209875835,
+            "estimated_channels": 102092,
+            "size_mb": 592.554,
+            "cumulative_assumed_actual_time_steps": 683959874
+          }
+        ],
+        "selected_paths": [
+          "monash_m1_yearly",
+          "monash_cif_2016",
+          "monash_m1_quarterly",
+          "monash_nn5_weekly",
+          "monash_tourism_yearly",
+          "monash_m3_yearly",
+          "monash_saugeenday",
+          "monash_m3_quarterly",
+          "monash_tourism_quarterly",
+          "uber_tlc_daily",
+          "monash_m1_monthly",
+          "monash_covid_deaths",
+          "monash_hospital",
+          "monash_fred_md",
+          "nn5",
+          "monash_tourism_monthly",
+          "wind_farms_daily",
+          "monash_car_parts",
+          "monash_m3_monthly",
+          "m4_weekly",
+          "m4_hourly",
+          "m4_yearly",
+          "uber_tlc_hourly",
+          "ercot",
+          "monash_rideshare",
+          "taxi_1h",
+          "m4_quarterly",
+          "wind_farms_hourly",
+          "monash_kdd_cup_2018",
+          "monash_pedestrian_counts",
+          "taxi_30min",
+          "m4_daily",
+          "m4_monthly",
+          "monash_temperature_rain",
+          "dominick",
+          "mexico_city_bikes",
+          "solar_1h",
+          "m5",
+          "monash_london_smart_meters",
+          "ushcn_daily",
+          "wiki_daily_100k"
+        ],
+        "estimated_channels": 399839,
+        "estimated_total_time_steps": 911946493,
+        "assumed_actual_time_steps_75pct": 683959874,
+        "difference_from_target": -166040126,
+        "difference_pct": -19.534,
+        "selected_size_mb": 2006.208,
+        "next_directory_if_added": "weatherbench_weekly",
+        "assumed_actual_steps_if_next_added": 1036163296
+      }
+    },
+    "lotsa": {
+      "repository": "Salesforce/lotsa_data",
+      "revision": "8191fd29eb5cf906ec55effca44d8059888b615d",
+      "directories_sorted_by_estimated_time_steps": [
+        {
+          "path": "cif_2016_6",
+          "estimated_total_time_steps": 723,
+          "assumed_actual_time_steps_75pct": 542,
+          "estimated_channels": 15,
+          "size_mb": 0.005,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m1_yearly",
+          "estimated_total_time_steps": 3886,
+          "assumed_actual_time_steps_75pct": 2915,
+          "estimated_channels": 106,
+          "size_mb": 0.018,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cif_2016_12",
+          "estimated_total_time_steps": 6041,
+          "assumed_actual_time_steps_75pct": 4531,
+          "estimated_channels": 57,
+          "size_mb": 0.026,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "us_births",
+          "estimated_total_time_steps": 7281,
+          "assumed_actual_time_steps_75pct": 5461,
+          "estimated_channels": 1,
+          "size_mb": 0.031,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m1_quarterly",
+          "estimated_total_time_steps": 11264,
+          "assumed_actual_time_steps_75pct": 8448,
+          "estimated_channels": 198,
+          "size_mb": 0.047,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "nn5_weekly",
+          "estimated_total_time_steps": 12433,
+          "assumed_actual_time_steps_75pct": 9325,
+          "estimated_channels": 111,
+          "size_mb": 0.052,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m3_other",
+          "estimated_total_time_steps": 13168,
+          "assumed_actual_time_steps_75pct": 9876,
+          "estimated_channels": 174,
+          "size_mb": 0.055,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "tourism_yearly",
+          "estimated_total_time_steps": 14214,
+          "assumed_actual_time_steps_75pct": 10661,
+          "estimated_channels": 419,
+          "size_mb": 0.059,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "elecdemand",
+          "estimated_total_time_steps": 17526,
+          "assumed_actual_time_steps_75pct": 13145,
+          "estimated_channels": 1,
+          "size_mb": 0.072,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "gfc14_load",
+          "estimated_total_time_steps": 17528,
+          "assumed_actual_time_steps_75pct": 13146,
+          "estimated_channels": 1,
+          "size_mb": 0.072,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "elf",
+          "estimated_total_time_steps": 21798,
+          "assumed_actual_time_steps_75pct": 16349,
+          "estimated_channels": 1,
+          "size_mb": 0.089,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m3_yearly",
+          "estimated_total_time_steps": 22968,
+          "assumed_actual_time_steps_75pct": 17226,
+          "estimated_channels": 645,
+          "size_mb": 0.094,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "saugeenday",
+          "estimated_total_time_steps": 23717,
+          "assumed_actual_time_steps_75pct": 17788,
+          "estimated_channels": 1,
+          "size_mb": 0.097,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "sceaux",
+          "estimated_total_time_steps": 34230,
+          "assumed_actual_time_steps_75pct": 25673,
+          "estimated_channels": 1,
+          "size_mb": 0.139,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "vehicle_trips_with_missing",
+          "estimated_total_time_steps": 34541,
+          "assumed_actual_time_steps_75pct": 25906,
+          "estimated_channels": 329,
+          "size_mb": 0.14,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "pdb",
+          "estimated_total_time_steps": 35047,
+          "assumed_actual_time_steps_75pct": 26285,
+          "estimated_channels": 1,
+          "size_mb": 0.143,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "tourism_quarterly",
+          "estimated_total_time_steps": 42197,
+          "assumed_actual_time_steps_75pct": 31648,
+          "estimated_channels": 427,
+          "size_mb": 0.171,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m3_quarterly",
+          "estimated_total_time_steps": 42458,
+          "assumed_actual_time_steps_75pct": 31844,
+          "estimated_channels": 756,
+          "size_mb": 0.172,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "uber_tlc_daily",
+          "estimated_total_time_steps": 48632,
+          "assumed_actual_time_steps_75pct": 36474,
+          "estimated_channels": 262,
+          "size_mb": 0.197,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m1_monthly",
+          "estimated_total_time_steps": 48721,
+          "assumed_actual_time_steps_75pct": 36541,
+          "estimated_channels": 617,
+          "size_mb": 0.197,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "covid_deaths",
+          "estimated_total_time_steps": 50048,
+          "assumed_actual_time_steps_75pct": 37536,
+          "estimated_channels": 266,
+          "size_mb": 0.202,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "hospital",
+          "estimated_total_time_steps": 59991,
+          "assumed_actual_time_steps_75pct": 44993,
+          "estimated_channels": 767,
+          "size_mb": 0.242,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "spain",
+          "estimated_total_time_steps": 70136,
+          "assumed_actual_time_steps_75pct": 52602,
+          "estimated_channels": 1,
+          "size_mb": 0.283,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "sunspot_with_missing",
+          "estimated_total_time_steps": 73900,
+          "assumed_actual_time_steps_75pct": 55425,
+          "estimated_channels": 1,
+          "size_mb": 0.298,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "fred_md",
+          "estimated_total_time_steps": 77254,
+          "assumed_actual_time_steps_75pct": 57941,
+          "estimated_channels": 107,
+          "size_mb": 0.311,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "bitcoin_with_missing",
+          "estimated_total_time_steps": 82073,
+          "assumed_actual_time_steps_75pct": 61555,
+          "estimated_channels": 18,
+          "size_mb": 0.33,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "nn5_daily_with_missing",
+          "estimated_total_time_steps": 82252,
+          "assumed_actual_time_steps_75pct": 61689,
+          "estimated_channels": 111,
+          "size_mb": 0.331,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "borealis",
+          "estimated_total_time_steps": 83369,
+          "assumed_actual_time_steps_75pct": 62527,
+          "estimated_channels": 15,
+          "size_mb": 0.336,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "favorita_transactions",
+          "estimated_total_time_steps": 84716,
+          "assumed_actual_time_steps_75pct": 63537,
+          "estimated_channels": 54,
+          "size_mb": 0.341,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "traffic_weekly",
+          "estimated_total_time_steps": 88974,
+          "assumed_actual_time_steps_75pct": 66731,
+          "estimated_channels": 862,
+          "size_mb": 0.358,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "smart",
+          "estimated_total_time_steps": 95742,
+          "assumed_actual_time_steps_75pct": 71807,
+          "estimated_channels": 5,
+          "size_mb": 0.385,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "tourism_monthly",
+          "estimated_total_time_steps": 102756,
+          "assumed_actual_time_steps_75pct": 77067,
+          "estimated_channels": 366,
+          "size_mb": 0.413,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cockatoo",
+          "estimated_total_time_steps": 105282,
+          "assumed_actual_time_steps_75pct": 78962,
+          "estimated_channels": 1,
+          "size_mb": 0.424,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "car_parts_with_missing",
+          "estimated_total_time_steps": 121390,
+          "assumed_actual_time_steps_75pct": 91043,
+          "estimated_channels": 2674,
+          "size_mb": 0.489,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "covid_mobility",
+          "estimated_total_time_steps": 150849,
+          "assumed_actual_time_steps_75pct": 113137,
+          "estimated_channels": 362,
+          "size_mb": 0.606,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "monash_m3_monthly",
+          "estimated_total_time_steps": 150863,
+          "assumed_actual_time_steps_75pct": 113147,
+          "estimated_channels": 1428,
+          "size_mb": 0.606,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cdc_fluview_who_nrevss",
+          "estimated_total_time_steps": 167944,
+          "assumed_actual_time_steps_75pct": 125958,
+          "estimated_channels": 296,
+          "size_mb": 0.674,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "hierarchical_sales",
+          "estimated_total_time_steps": 213040,
+          "assumed_actual_time_steps_75pct": 159780,
+          "estimated_channels": 118,
+          "size_mb": 0.854,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "covid19_energy",
+          "estimated_total_time_steps": 223399,
+          "assumed_actual_time_steps_75pct": 167549,
+          "estimated_channels": 1,
+          "size_mb": 0.896,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "gfc17_load",
+          "estimated_total_time_steps": 280784,
+          "assumed_actual_time_steps_75pct": 210588,
+          "estimated_channels": 8,
+          "size_mb": 1.126,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "godaddy",
+          "estimated_total_time_steps": 281288,
+          "assumed_actual_time_steps_75pct": 210966,
+          "estimated_channels": 6270,
+          "size_mb": 1.129,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "restaurant",
+          "estimated_total_time_steps": 297694,
+          "assumed_actual_time_steps_75pct": 223271,
+          "estimated_channels": 809,
+          "size_mb": 1.193,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cdc_fluview_ilinet",
+          "estimated_total_time_steps": 320515,
+          "assumed_actual_time_steps_75pct": 240386,
+          "estimated_channels": 375,
+          "size_mb": 1.284,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_hourly",
+          "estimated_total_time_steps": 355956,
+          "assumed_actual_time_steps_75pct": 266967,
+          "estimated_channels": 414,
+          "size_mb": 1.426,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_weekly",
+          "estimated_total_time_steps": 369398,
+          "assumed_actual_time_steps_75pct": 277049,
+          "estimated_channels": 359,
+          "size_mb": 1.48,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "HZMETRO",
+          "estimated_total_time_steps": 380898,
+          "assumed_actual_time_steps_75pct": 285674,
+          "estimated_channels": 160,
+          "size_mb": 1.526,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "SZ_TAXI",
+          "estimated_total_time_steps": 465361,
+          "assumed_actual_time_steps_75pct": 349021,
+          "estimated_channels": 156,
+          "size_mb": 1.864,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "oikolab_weather",
+          "estimated_total_time_steps": 800502,
+          "assumed_actual_time_steps_75pct": 600377,
+          "estimated_channels": 8,
+          "size_mb": 3.204,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "rideshare_with_missing",
+          "estimated_total_time_steps": 874111,
+          "assumed_actual_time_steps_75pct": 655583,
+          "estimated_channels": 2304,
+          "size_mb": 3.499,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "bdg-2_panther",
+          "estimated_total_time_steps": 920936,
+          "assumed_actual_time_steps_75pct": 690702,
+          "estimated_channels": 105,
+          "size_mb": 3.686,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_yearly",
+          "estimated_total_time_steps": 1008409,
+          "assumed_actual_time_steps_75pct": 756307,
+          "estimated_channels": 22739,
+          "size_mb": 4.044,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "uber_tlc_hourly",
+          "estimated_total_time_steps": 1130989,
+          "assumed_actual_time_steps_75pct": 848242,
+          "estimated_channels": 262,
+          "size_mb": 4.526,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "australian_electricity_demand",
+          "estimated_total_time_steps": 1153615,
+          "assumed_actual_time_steps_75pct": 865211,
+          "estimated_channels": 5,
+          "size_mb": 4.617,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "ideal",
+          "estimated_total_time_steps": 1256764,
+          "assumed_actual_time_steps_75pct": 942573,
+          "estimated_channels": 217,
+          "size_mb": 5.029,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "project_tycho",
+          "estimated_total_time_steps": 1396328,
+          "assumed_actual_time_steps_75pct": 1047246,
+          "estimated_channels": 1258,
+          "size_mb": 5.588,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "bdg-2_bear",
+          "estimated_total_time_steps": 1483246,
+          "assumed_actual_time_steps_75pct": 1112435,
+          "estimated_channels": 91,
+          "size_mb": 5.935,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "gfc12_load",
+          "estimated_total_time_steps": 1576748,
+          "assumed_actual_time_steps_75pct": 1182561,
+          "estimated_channels": 20,
+          "size_mb": 6.31,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "bdg-2_fox",
+          "estimated_total_time_steps": 2325915,
+          "assumed_actual_time_steps_75pct": 1744436,
+          "estimated_channels": 135,
+          "size_mb": 9.306,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_quarterly",
+          "estimated_total_time_steps": 2391282,
+          "assumed_actual_time_steps_75pct": 1793462,
+          "estimated_channels": 23998,
+          "size_mb": 9.576,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "hog",
+          "estimated_total_time_steps": 2526711,
+          "assumed_actual_time_steps_75pct": 1895033,
+          "estimated_channels": 24,
+          "size_mb": 10.11,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "bull",
+          "estimated_total_time_steps": 2877811,
+          "assumed_actual_time_steps_75pct": 2158358,
+          "estimated_channels": 41,
+          "size_mb": 11.514,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "kdd_cup_2018_with_missing",
+          "estimated_total_time_steps": 2898664,
+          "assumed_actual_time_steps_75pct": 2173998,
+          "estimated_channels": 270,
+          "size_mb": 11.597,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "pedestrian_counts",
+          "estimated_total_time_steps": 3131156,
+          "assumed_actual_time_steps_75pct": 2348367,
+          "estimated_channels": 66,
+          "size_mb": 12.527,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "M_DENSE",
+          "estimated_total_time_steps": 4205180,
+          "assumed_actual_time_steps_75pct": 3153885,
+          "estimated_channels": 30,
+          "size_mb": 16.824,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "beijing_air_quality",
+          "estimated_total_time_steps": 4628740,
+          "assumed_actual_time_steps_75pct": 3471555,
+          "estimated_channels": 132,
+          "size_mb": 18.517,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "bdg-2_rat",
+          "estimated_total_time_steps": 4731035,
+          "assumed_actual_time_steps_75pct": 3548276,
+          "estimated_channels": 280,
+          "size_mb": 18.926,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "SHMETRO",
+          "estimated_total_time_steps": 5076116,
+          "assumed_actual_time_steps_75pct": 3807087,
+          "estimated_channels": 576,
+          "size_mb": 20.307,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "BEIJING_SUBWAY_30MIN",
+          "estimated_total_time_steps": 5645414,
+          "assumed_actual_time_steps_75pct": 4234061,
+          "estimated_channels": 552,
+          "size_mb": 22.585,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "LOS_LOOP",
+          "estimated_total_time_steps": 7095753,
+          "assumed_actual_time_steps_75pct": 5321815,
+          "estimated_channels": 207,
+          "size_mb": 28.385,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "wind_power",
+          "estimated_total_time_steps": 7397153,
+          "assumed_actual_time_steps_75pct": 5547865,
+          "estimated_channels": 1,
+          "size_mb": 29.591,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "solar_power",
+          "estimated_total_time_steps": 7397228,
+          "assumed_actual_time_steps_75pct": 5547921,
+          "estimated_channels": 1,
+          "size_mb": 29.591,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "PEMS08",
+          "estimated_total_time_steps": 9107935,
+          "assumed_actual_time_steps_75pct": 6830951,
+          "estimated_channels": 510,
+          "size_mb": 36.434,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "PEMS03",
+          "estimated_total_time_steps": 9384970,
+          "assumed_actual_time_steps_75pct": 7038728,
+          "estimated_channels": 358,
+          "size_mb": 37.542,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "lcl",
+          "estimated_total_time_steps": 9548900,
+          "assumed_actual_time_steps_75pct": 7161675,
+          "estimated_channels": 713,
+          "size_mb": 38.198,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "subseasonal_precip",
+          "estimated_total_time_steps": 9767106,
+          "assumed_actual_time_steps_75pct": 7325330,
+          "estimated_channels": 862,
+          "size_mb": 39.071,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_daily",
+          "estimated_total_time_steps": 9990799,
+          "assumed_actual_time_steps_75pct": 7493099,
+          "estimated_channels": 4227,
+          "size_mb": 39.967,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m4_monthly",
+          "estimated_total_time_steps": 10691634,
+          "assumed_actual_time_steps_75pct": 8018726,
+          "estimated_channels": 48000,
+          "size_mb": 42.787,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "traffic_hourly",
+          "estimated_total_time_steps": 14983472,
+          "assumed_actual_time_steps_75pct": 11237604,
+          "estimated_channels": 862,
+          "size_mb": 59.936,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "PEMS04",
+          "estimated_total_time_steps": 15652137,
+          "assumed_actual_time_steps_75pct": 11739103,
+          "estimated_channels": 921,
+          "size_mb": 62.611,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "PEMS_BAY",
+          "estimated_total_time_steps": 16943875,
+          "assumed_actual_time_steps_75pct": 12707906,
+          "estimated_channels": 325,
+          "size_mb": 67.778,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "kaggle_web_traffic_weekly",
+          "estimated_total_time_steps": 17669910,
+          "assumed_actual_time_steps_75pct": 13252433,
+          "estimated_channels": 145063,
+          "size_mb": 70.739,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "temperature_rain_with_missing",
+          "estimated_total_time_steps": 22503748,
+          "assumed_actual_time_steps_75pct": 16877811,
+          "estimated_channels": 32072,
+          "size_mb": 90.03,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "PEMS07",
+          "estimated_total_time_steps": 24927283,
+          "assumed_actual_time_steps_75pct": 18695462,
+          "estimated_channels": 883,
+          "size_mb": 99.711,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "LOOP_SEATTLE",
+          "estimated_total_time_steps": 33955751,
+          "assumed_actual_time_steps_75pct": 25466813,
+          "estimated_channels": 323,
+          "size_mb": 135.825,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "china_air_quality",
+          "estimated_total_time_steps": 34440417,
+          "assumed_actual_time_steps_75pct": 25830313,
+          "estimated_channels": 2622,
+          "size_mb": 137.764,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "wiki-rolling_nips",
+          "estimated_total_time_steps": 40926210,
+          "assumed_actual_time_steps_75pct": 30694658,
+          "estimated_channels": 47675,
+          "size_mb": 163.725,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "weather",
+          "estimated_total_time_steps": 42960988,
+          "assumed_actual_time_steps_75pct": 32220741,
+          "estimated_channels": 3010,
+          "size_mb": 171.847,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "kdd2022",
+          "estimated_total_time_steps": 47277240,
+          "assumed_actual_time_steps_75pct": 35457930,
+          "estimated_channels": 134,
+          "size_mb": 189.112,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "taxi_30min",
+          "estimated_total_time_steps": 55472166,
+          "assumed_actual_time_steps_75pct": 41604125,
+          "estimated_channels": 67984,
+          "size_mb": 221.917,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "subseasonal",
+          "estimated_total_time_steps": 56797826,
+          "assumed_actual_time_steps_75pct": 42598370,
+          "estimated_channels": 3448,
+          "size_mb": 227.194,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "m5",
+          "estimated_total_time_steps": 58706545,
+          "assumed_actual_time_steps_75pct": 44029909,
+          "estimated_channels": 30490,
+          "size_mb": 234.84,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "favorita_sales",
+          "estimated_total_time_steps": 140029049,
+          "assumed_actual_time_steps_75pct": 105021787,
+          "estimated_channels": 111840,
+          "size_mb": 560.163,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "london_smart_meters_with_missing",
+          "estimated_total_time_steps": 166277245,
+          "assumed_actual_time_steps_75pct": 124707934,
+          "estimated_channels": 5520,
+          "size_mb": 665.114,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "wind_farms_with_missing",
+          "estimated_total_time_steps": 172167449,
+          "assumed_actual_time_steps_75pct": 129125587,
+          "estimated_channels": 337,
+          "size_mb": 688.673,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "Q-TRAFFIC",
+          "estimated_total_time_steps": 264759159,
+          "assumed_actual_time_steps_75pct": 198569369,
+          "estimated_channels": 45148,
+          "size_mb": 1059.059,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "extended_web_traffic_with_missing",
+          "estimated_total_time_steps": 371913756,
+          "assumed_actual_time_steps_75pct": 278935317,
+          "estimated_channels": 145063,
+          "size_mb": 1487.716,
+          "eligible_for_prepare": false,
+          "status": "estimated"
+        },
+        {
+          "path": "residential_pv_power",
+          "estimated_total_time_steps": 376019507,
+          "assumed_actual_time_steps_75pct": 282014630,
+          "estimated_channels": 699,
+          "size_mb": 1504.084,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "residential_load_power",
+          "estimated_total_time_steps": 437986902,
+          "assumed_actual_time_steps_75pct": 328490177,
+          "estimated_channels": 813,
+          "size_mb": 1751.954,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "alibaba_cluster_trace_2018",
+          "estimated_total_time_steps": 762342376,
+          "assumed_actual_time_steps_75pct": 571756782,
+          "estimated_channels": 116818,
+          "size_mb": 3049.416,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "largest_2017",
+          "estimated_total_time_steps": 861621545,
+          "assumed_actual_time_steps_75pct": 646216159,
+          "estimated_channels": 8196,
+          "size_mb": 3446.498,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "largest_2018",
+          "estimated_total_time_steps": 886011051,
+          "assumed_actual_time_steps_75pct": 664508288,
+          "estimated_channels": 8428,
+          "size_mb": 3544.058,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "largest_2021",
+          "estimated_total_time_steps": 898626340,
+          "assumed_actual_time_steps_75pct": 673969755,
+          "estimated_channels": 8548,
+          "size_mb": 3594.52,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "largest_2020",
+          "estimated_total_time_steps": 902458560,
+          "assumed_actual_time_steps_75pct": 676843920,
+          "estimated_channels": 8561,
+          "size_mb": 3609.848,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "largest_2019",
+          "estimated_total_time_steps": 904092955,
+          "assumed_actual_time_steps_75pct": 678069716,
+          "estimated_channels": 8600,
+          "size_mb": 3616.386,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "azure_vm_traces_2017",
+          "estimated_total_time_steps": 2657983364,
+          "assumed_actual_time_steps_75pct": 1993487523,
+          "estimated_channels": 159472,
+          "size_mb": 10632.052,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1850",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1855",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1860",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1865",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1870",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1875",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1880",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1885",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1890",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1895",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1900",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1905",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1910",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1915",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1920",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1925",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1930",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1935",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1940",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1945",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1950",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1955",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1960",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1965",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1970",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1975",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1980",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1985",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1990",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_1995",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_2000",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_2005",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "cmip6_2010",
+          "estimated_total_time_steps": 3169976288,
+          "assumed_actual_time_steps_75pct": 2377482216,
+          "estimated_channels": 434176,
+          "size_mb": 12680.025,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1989",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1990",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1991",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1992",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1993",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1994",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1995",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1996",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1997",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1998",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_1999",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2000",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2001",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2002",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2003",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2004",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2005",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2006",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2007",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2008",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2009",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2010",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2011",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2012",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2013",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2014",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2015",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2016",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2017",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "era5_2018",
+          "estimated_total_time_steps": 3220862944,
+          "assumed_actual_time_steps_75pct": 2415647208,
+          "estimated_channels": 368640,
+          "size_mb": 12883.571,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "borg_cluster_data_2011",
+          "estimated_total_time_steps": 3764711775,
+          "assumed_actual_time_steps_75pct": 2823533831,
+          "estimated_channels": 286772,
+          "size_mb": 15058.972,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        },
+        {
+          "path": "buildings_900k",
+          "estimated_total_time_steps": 15754803590,
+          "assumed_actual_time_steps_75pct": 11816102693,
+          "estimated_channels": 1795256,
+          "size_mb": 63020.067,
+          "eligible_for_prepare": true,
+          "status": "estimated"
+        }
+      ],
+      "selection": {
+        "method": "ascending_estimated_steps_accumulate_then_choose_closer_side_of_target",
+        "eligible_directories": 162,
+        "selected_directories": [
+          {
+            "path": "cif_2016_6",
+            "estimated_total_time_steps": 723,
+            "assumed_actual_time_steps_75pct": 542,
+            "estimated_channels": 15,
+            "size_mb": 0.005,
+            "cumulative_assumed_actual_time_steps": 542
+          },
+          {
+            "path": "m1_yearly",
+            "estimated_total_time_steps": 3886,
+            "assumed_actual_time_steps_75pct": 2915,
+            "estimated_channels": 106,
+            "size_mb": 0.018,
+            "cumulative_assumed_actual_time_steps": 3457
+          },
+          {
+            "path": "cif_2016_12",
+            "estimated_total_time_steps": 6041,
+            "assumed_actual_time_steps_75pct": 4531,
+            "estimated_channels": 57,
+            "size_mb": 0.026,
+            "cumulative_assumed_actual_time_steps": 7988
+          },
+          {
+            "path": "us_births",
+            "estimated_total_time_steps": 7281,
+            "assumed_actual_time_steps_75pct": 5461,
+            "estimated_channels": 1,
+            "size_mb": 0.031,
+            "cumulative_assumed_actual_time_steps": 13449
+          },
+          {
+            "path": "m1_quarterly",
+            "estimated_total_time_steps": 11264,
+            "assumed_actual_time_steps_75pct": 8448,
+            "estimated_channels": 198,
+            "size_mb": 0.047,
+            "cumulative_assumed_actual_time_steps": 21897
+          },
+          {
+            "path": "nn5_weekly",
+            "estimated_total_time_steps": 12433,
+            "assumed_actual_time_steps_75pct": 9325,
+            "estimated_channels": 111,
+            "size_mb": 0.052,
+            "cumulative_assumed_actual_time_steps": 31222
+          },
+          {
+            "path": "monash_m3_other",
+            "estimated_total_time_steps": 13168,
+            "assumed_actual_time_steps_75pct": 9876,
+            "estimated_channels": 174,
+            "size_mb": 0.055,
+            "cumulative_assumed_actual_time_steps": 41098
+          },
+          {
+            "path": "tourism_yearly",
+            "estimated_total_time_steps": 14214,
+            "assumed_actual_time_steps_75pct": 10661,
+            "estimated_channels": 419,
+            "size_mb": 0.059,
+            "cumulative_assumed_actual_time_steps": 51759
+          },
+          {
+            "path": "elecdemand",
+            "estimated_total_time_steps": 17526,
+            "assumed_actual_time_steps_75pct": 13145,
+            "estimated_channels": 1,
+            "size_mb": 0.072,
+            "cumulative_assumed_actual_time_steps": 64904
+          },
+          {
+            "path": "gfc14_load",
+            "estimated_total_time_steps": 17528,
+            "assumed_actual_time_steps_75pct": 13146,
+            "estimated_channels": 1,
+            "size_mb": 0.072,
+            "cumulative_assumed_actual_time_steps": 78050
+          },
+          {
+            "path": "elf",
+            "estimated_total_time_steps": 21798,
+            "assumed_actual_time_steps_75pct": 16349,
+            "estimated_channels": 1,
+            "size_mb": 0.089,
+            "cumulative_assumed_actual_time_steps": 94399
+          },
+          {
+            "path": "monash_m3_yearly",
+            "estimated_total_time_steps": 22968,
+            "assumed_actual_time_steps_75pct": 17226,
+            "estimated_channels": 645,
+            "size_mb": 0.094,
+            "cumulative_assumed_actual_time_steps": 111625
+          },
+          {
+            "path": "saugeenday",
+            "estimated_total_time_steps": 23717,
+            "assumed_actual_time_steps_75pct": 17788,
+            "estimated_channels": 1,
+            "size_mb": 0.097,
+            "cumulative_assumed_actual_time_steps": 129413
+          },
+          {
+            "path": "sceaux",
+            "estimated_total_time_steps": 34230,
+            "assumed_actual_time_steps_75pct": 25673,
+            "estimated_channels": 1,
+            "size_mb": 0.139,
+            "cumulative_assumed_actual_time_steps": 155086
+          },
+          {
+            "path": "vehicle_trips_with_missing",
+            "estimated_total_time_steps": 34541,
+            "assumed_actual_time_steps_75pct": 25906,
+            "estimated_channels": 329,
+            "size_mb": 0.14,
+            "cumulative_assumed_actual_time_steps": 180992
+          },
+          {
+            "path": "pdb",
+            "estimated_total_time_steps": 35047,
+            "assumed_actual_time_steps_75pct": 26285,
+            "estimated_channels": 1,
+            "size_mb": 0.143,
+            "cumulative_assumed_actual_time_steps": 207277
+          },
+          {
+            "path": "tourism_quarterly",
+            "estimated_total_time_steps": 42197,
+            "assumed_actual_time_steps_75pct": 31648,
+            "estimated_channels": 427,
+            "size_mb": 0.171,
+            "cumulative_assumed_actual_time_steps": 238925
+          },
+          {
+            "path": "monash_m3_quarterly",
+            "estimated_total_time_steps": 42458,
+            "assumed_actual_time_steps_75pct": 31844,
+            "estimated_channels": 756,
+            "size_mb": 0.172,
+            "cumulative_assumed_actual_time_steps": 270769
+          },
+          {
+            "path": "uber_tlc_daily",
+            "estimated_total_time_steps": 48632,
+            "assumed_actual_time_steps_75pct": 36474,
+            "estimated_channels": 262,
+            "size_mb": 0.197,
+            "cumulative_assumed_actual_time_steps": 307243
+          },
+          {
+            "path": "m1_monthly",
+            "estimated_total_time_steps": 48721,
+            "assumed_actual_time_steps_75pct": 36541,
+            "estimated_channels": 617,
+            "size_mb": 0.197,
+            "cumulative_assumed_actual_time_steps": 343784
+          },
+          {
+            "path": "covid_deaths",
+            "estimated_total_time_steps": 50048,
+            "assumed_actual_time_steps_75pct": 37536,
+            "estimated_channels": 266,
+            "size_mb": 0.202,
+            "cumulative_assumed_actual_time_steps": 381320
+          },
+          {
+            "path": "hospital",
+            "estimated_total_time_steps": 59991,
+            "assumed_actual_time_steps_75pct": 44993,
+            "estimated_channels": 767,
+            "size_mb": 0.242,
+            "cumulative_assumed_actual_time_steps": 426313
+          },
+          {
+            "path": "spain",
+            "estimated_total_time_steps": 70136,
+            "assumed_actual_time_steps_75pct": 52602,
+            "estimated_channels": 1,
+            "size_mb": 0.283,
+            "cumulative_assumed_actual_time_steps": 478915
+          },
+          {
+            "path": "sunspot_with_missing",
+            "estimated_total_time_steps": 73900,
+            "assumed_actual_time_steps_75pct": 55425,
+            "estimated_channels": 1,
+            "size_mb": 0.298,
+            "cumulative_assumed_actual_time_steps": 534340
+          },
+          {
+            "path": "fred_md",
+            "estimated_total_time_steps": 77254,
+            "assumed_actual_time_steps_75pct": 57941,
+            "estimated_channels": 107,
+            "size_mb": 0.311,
+            "cumulative_assumed_actual_time_steps": 592281
+          },
+          {
+            "path": "bitcoin_with_missing",
+            "estimated_total_time_steps": 82073,
+            "assumed_actual_time_steps_75pct": 61555,
+            "estimated_channels": 18,
+            "size_mb": 0.33,
+            "cumulative_assumed_actual_time_steps": 653836
+          },
+          {
+            "path": "nn5_daily_with_missing",
+            "estimated_total_time_steps": 82252,
+            "assumed_actual_time_steps_75pct": 61689,
+            "estimated_channels": 111,
+            "size_mb": 0.331,
+            "cumulative_assumed_actual_time_steps": 715525
+          },
+          {
+            "path": "borealis",
+            "estimated_total_time_steps": 83369,
+            "assumed_actual_time_steps_75pct": 62527,
+            "estimated_channels": 15,
+            "size_mb": 0.336,
+            "cumulative_assumed_actual_time_steps": 778052
+          },
+          {
+            "path": "favorita_transactions",
+            "estimated_total_time_steps": 84716,
+            "assumed_actual_time_steps_75pct": 63537,
+            "estimated_channels": 54,
+            "size_mb": 0.341,
+            "cumulative_assumed_actual_time_steps": 841589
+          },
+          {
+            "path": "smart",
+            "estimated_total_time_steps": 95742,
+            "assumed_actual_time_steps_75pct": 71807,
+            "estimated_channels": 5,
+            "size_mb": 0.385,
+            "cumulative_assumed_actual_time_steps": 913396
+          },
+          {
+            "path": "tourism_monthly",
+            "estimated_total_time_steps": 102756,
+            "assumed_actual_time_steps_75pct": 77067,
+            "estimated_channels": 366,
+            "size_mb": 0.413,
+            "cumulative_assumed_actual_time_steps": 990463
+          },
+          {
+            "path": "cockatoo",
+            "estimated_total_time_steps": 105282,
+            "assumed_actual_time_steps_75pct": 78962,
+            "estimated_channels": 1,
+            "size_mb": 0.424,
+            "cumulative_assumed_actual_time_steps": 1069425
+          },
+          {
+            "path": "car_parts_with_missing",
+            "estimated_total_time_steps": 121390,
+            "assumed_actual_time_steps_75pct": 91043,
+            "estimated_channels": 2674,
+            "size_mb": 0.489,
+            "cumulative_assumed_actual_time_steps": 1160468
+          },
+          {
+            "path": "covid_mobility",
+            "estimated_total_time_steps": 150849,
+            "assumed_actual_time_steps_75pct": 113137,
+            "estimated_channels": 362,
+            "size_mb": 0.606,
+            "cumulative_assumed_actual_time_steps": 1273605
+          },
+          {
+            "path": "monash_m3_monthly",
+            "estimated_total_time_steps": 150863,
+            "assumed_actual_time_steps_75pct": 113147,
+            "estimated_channels": 1428,
+            "size_mb": 0.606,
+            "cumulative_assumed_actual_time_steps": 1386752
+          },
+          {
+            "path": "cdc_fluview_who_nrevss",
+            "estimated_total_time_steps": 167944,
+            "assumed_actual_time_steps_75pct": 125958,
+            "estimated_channels": 296,
+            "size_mb": 0.674,
+            "cumulative_assumed_actual_time_steps": 1512710
+          },
+          {
+            "path": "hierarchical_sales",
+            "estimated_total_time_steps": 213040,
+            "assumed_actual_time_steps_75pct": 159780,
+            "estimated_channels": 118,
+            "size_mb": 0.854,
+            "cumulative_assumed_actual_time_steps": 1672490
+          },
+          {
+            "path": "covid19_energy",
+            "estimated_total_time_steps": 223399,
+            "assumed_actual_time_steps_75pct": 167549,
+            "estimated_channels": 1,
+            "size_mb": 0.896,
+            "cumulative_assumed_actual_time_steps": 1840039
+          },
+          {
+            "path": "gfc17_load",
+            "estimated_total_time_steps": 280784,
+            "assumed_actual_time_steps_75pct": 210588,
+            "estimated_channels": 8,
+            "size_mb": 1.126,
+            "cumulative_assumed_actual_time_steps": 2050627
+          },
+          {
+            "path": "godaddy",
+            "estimated_total_time_steps": 281288,
+            "assumed_actual_time_steps_75pct": 210966,
+            "estimated_channels": 6270,
+            "size_mb": 1.129,
+            "cumulative_assumed_actual_time_steps": 2261593
+          },
+          {
+            "path": "restaurant",
+            "estimated_total_time_steps": 297694,
+            "assumed_actual_time_steps_75pct": 223271,
+            "estimated_channels": 809,
+            "size_mb": 1.193,
+            "cumulative_assumed_actual_time_steps": 2484864
+          },
+          {
+            "path": "cdc_fluview_ilinet",
+            "estimated_total_time_steps": 320515,
+            "assumed_actual_time_steps_75pct": 240386,
+            "estimated_channels": 375,
+            "size_mb": 1.284,
+            "cumulative_assumed_actual_time_steps": 2725250
+          },
+          {
+            "path": "m4_hourly",
+            "estimated_total_time_steps": 355956,
+            "assumed_actual_time_steps_75pct": 266967,
+            "estimated_channels": 414,
+            "size_mb": 1.426,
+            "cumulative_assumed_actual_time_steps": 2992217
+          },
+          {
+            "path": "m4_weekly",
+            "estimated_total_time_steps": 369398,
+            "assumed_actual_time_steps_75pct": 277049,
+            "estimated_channels": 359,
+            "size_mb": 1.48,
+            "cumulative_assumed_actual_time_steps": 3269266
+          },
+          {
+            "path": "HZMETRO",
+            "estimated_total_time_steps": 380898,
+            "assumed_actual_time_steps_75pct": 285674,
+            "estimated_channels": 160,
+            "size_mb": 1.526,
+            "cumulative_assumed_actual_time_steps": 3554940
+          },
+          {
+            "path": "SZ_TAXI",
+            "estimated_total_time_steps": 465361,
+            "assumed_actual_time_steps_75pct": 349021,
+            "estimated_channels": 156,
+            "size_mb": 1.864,
+            "cumulative_assumed_actual_time_steps": 3903961
+          },
+          {
+            "path": "rideshare_with_missing",
+            "estimated_total_time_steps": 874111,
+            "assumed_actual_time_steps_75pct": 655583,
+            "estimated_channels": 2304,
+            "size_mb": 3.499,
+            "cumulative_assumed_actual_time_steps": 4559544
+          },
+          {
+            "path": "bdg-2_panther",
+            "estimated_total_time_steps": 920936,
+            "assumed_actual_time_steps_75pct": 690702,
+            "estimated_channels": 105,
+            "size_mb": 3.686,
+            "cumulative_assumed_actual_time_steps": 5250246
+          },
+          {
+            "path": "m4_yearly",
+            "estimated_total_time_steps": 1008409,
+            "assumed_actual_time_steps_75pct": 756307,
+            "estimated_channels": 22739,
+            "size_mb": 4.044,
+            "cumulative_assumed_actual_time_steps": 6006553
+          },
+          {
+            "path": "uber_tlc_hourly",
+            "estimated_total_time_steps": 1130989,
+            "assumed_actual_time_steps_75pct": 848242,
+            "estimated_channels": 262,
+            "size_mb": 4.526,
+            "cumulative_assumed_actual_time_steps": 6854795
+          },
+          {
+            "path": "ideal",
+            "estimated_total_time_steps": 1256764,
+            "assumed_actual_time_steps_75pct": 942573,
+            "estimated_channels": 217,
+            "size_mb": 5.029,
+            "cumulative_assumed_actual_time_steps": 7797368
+          },
+          {
+            "path": "project_tycho",
+            "estimated_total_time_steps": 1396328,
+            "assumed_actual_time_steps_75pct": 1047246,
+            "estimated_channels": 1258,
+            "size_mb": 5.588,
+            "cumulative_assumed_actual_time_steps": 8844614
+          },
+          {
+            "path": "bdg-2_bear",
+            "estimated_total_time_steps": 1483246,
+            "assumed_actual_time_steps_75pct": 1112435,
+            "estimated_channels": 91,
+            "size_mb": 5.935,
+            "cumulative_assumed_actual_time_steps": 9957049
+          },
+          {
+            "path": "gfc12_load",
+            "estimated_total_time_steps": 1576748,
+            "assumed_actual_time_steps_75pct": 1182561,
+            "estimated_channels": 20,
+            "size_mb": 6.31,
+            "cumulative_assumed_actual_time_steps": 11139610
+          },
+          {
+            "path": "bdg-2_fox",
+            "estimated_total_time_steps": 2325915,
+            "assumed_actual_time_steps_75pct": 1744436,
+            "estimated_channels": 135,
+            "size_mb": 9.306,
+            "cumulative_assumed_actual_time_steps": 12884046
+          },
+          {
+            "path": "m4_quarterly",
+            "estimated_total_time_steps": 2391282,
+            "assumed_actual_time_steps_75pct": 1793462,
+            "estimated_channels": 23998,
+            "size_mb": 9.576,
+            "cumulative_assumed_actual_time_steps": 14677508
+          },
+          {
+            "path": "hog",
+            "estimated_total_time_steps": 2526711,
+            "assumed_actual_time_steps_75pct": 1895033,
+            "estimated_channels": 24,
+            "size_mb": 10.11,
+            "cumulative_assumed_actual_time_steps": 16572541
+          },
+          {
+            "path": "bull",
+            "estimated_total_time_steps": 2877811,
+            "assumed_actual_time_steps_75pct": 2158358,
+            "estimated_channels": 41,
+            "size_mb": 11.514,
+            "cumulative_assumed_actual_time_steps": 18730899
+          },
+          {
+            "path": "kdd_cup_2018_with_missing",
+            "estimated_total_time_steps": 2898664,
+            "assumed_actual_time_steps_75pct": 2173998,
+            "estimated_channels": 270,
+            "size_mb": 11.597,
+            "cumulative_assumed_actual_time_steps": 20904897
+          },
+          {
+            "path": "pedestrian_counts",
+            "estimated_total_time_steps": 3131156,
+            "assumed_actual_time_steps_75pct": 2348367,
+            "estimated_channels": 66,
+            "size_mb": 12.527,
+            "cumulative_assumed_actual_time_steps": 23253264
+          },
+          {
+            "path": "M_DENSE",
+            "estimated_total_time_steps": 4205180,
+            "assumed_actual_time_steps_75pct": 3153885,
+            "estimated_channels": 30,
+            "size_mb": 16.824,
+            "cumulative_assumed_actual_time_steps": 26407149
+          },
+          {
+            "path": "beijing_air_quality",
+            "estimated_total_time_steps": 4628740,
+            "assumed_actual_time_steps_75pct": 3471555,
+            "estimated_channels": 132,
+            "size_mb": 18.517,
+            "cumulative_assumed_actual_time_steps": 29878704
+          },
+          {
+            "path": "bdg-2_rat",
+            "estimated_total_time_steps": 4731035,
+            "assumed_actual_time_steps_75pct": 3548276,
+            "estimated_channels": 280,
+            "size_mb": 18.926,
+            "cumulative_assumed_actual_time_steps": 33426980
+          },
+          {
+            "path": "SHMETRO",
+            "estimated_total_time_steps": 5076116,
+            "assumed_actual_time_steps_75pct": 3807087,
+            "estimated_channels": 576,
+            "size_mb": 20.307,
+            "cumulative_assumed_actual_time_steps": 37234067
+          },
+          {
+            "path": "BEIJING_SUBWAY_30MIN",
+            "estimated_total_time_steps": 5645414,
+            "assumed_actual_time_steps_75pct": 4234061,
+            "estimated_channels": 552,
+            "size_mb": 22.585,
+            "cumulative_assumed_actual_time_steps": 41468128
+          },
+          {
+            "path": "LOS_LOOP",
+            "estimated_total_time_steps": 7095753,
+            "assumed_actual_time_steps_75pct": 5321815,
+            "estimated_channels": 207,
+            "size_mb": 28.385,
+            "cumulative_assumed_actual_time_steps": 46789943
+          },
+          {
+            "path": "wind_power",
+            "estimated_total_time_steps": 7397153,
+            "assumed_actual_time_steps_75pct": 5547865,
+            "estimated_channels": 1,
+            "size_mb": 29.591,
+            "cumulative_assumed_actual_time_steps": 52337808
+          },
+          {
+            "path": "solar_power",
+            "estimated_total_time_steps": 7397228,
+            "assumed_actual_time_steps_75pct": 5547921,
+            "estimated_channels": 1,
+            "size_mb": 29.591,
+            "cumulative_assumed_actual_time_steps": 57885729
+          },
+          {
+            "path": "PEMS08",
+            "estimated_total_time_steps": 9107935,
+            "assumed_actual_time_steps_75pct": 6830951,
+            "estimated_channels": 510,
+            "size_mb": 36.434,
+            "cumulative_assumed_actual_time_steps": 64716680
+          },
+          {
+            "path": "PEMS03",
+            "estimated_total_time_steps": 9384970,
+            "assumed_actual_time_steps_75pct": 7038728,
+            "estimated_channels": 358,
+            "size_mb": 37.542,
+            "cumulative_assumed_actual_time_steps": 71755408
+          },
+          {
+            "path": "lcl",
+            "estimated_total_time_steps": 9548900,
+            "assumed_actual_time_steps_75pct": 7161675,
+            "estimated_channels": 713,
+            "size_mb": 38.198,
+            "cumulative_assumed_actual_time_steps": 78917083
+          },
+          {
+            "path": "subseasonal_precip",
+            "estimated_total_time_steps": 9767106,
+            "assumed_actual_time_steps_75pct": 7325330,
+            "estimated_channels": 862,
+            "size_mb": 39.071,
+            "cumulative_assumed_actual_time_steps": 86242413
+          },
+          {
+            "path": "m4_daily",
+            "estimated_total_time_steps": 9990799,
+            "assumed_actual_time_steps_75pct": 7493099,
+            "estimated_channels": 4227,
+            "size_mb": 39.967,
+            "cumulative_assumed_actual_time_steps": 93735512
+          },
+          {
+            "path": "m4_monthly",
+            "estimated_total_time_steps": 10691634,
+            "assumed_actual_time_steps_75pct": 8018726,
+            "estimated_channels": 48000,
+            "size_mb": 42.787,
+            "cumulative_assumed_actual_time_steps": 101754238
+          },
+          {
+            "path": "PEMS04",
+            "estimated_total_time_steps": 15652137,
+            "assumed_actual_time_steps_75pct": 11739103,
+            "estimated_channels": 921,
+            "size_mb": 62.611,
+            "cumulative_assumed_actual_time_steps": 113493341
+          },
+          {
+            "path": "PEMS_BAY",
+            "estimated_total_time_steps": 16943875,
+            "assumed_actual_time_steps_75pct": 12707906,
+            "estimated_channels": 325,
+            "size_mb": 67.778,
+            "cumulative_assumed_actual_time_steps": 126201247
+          },
+          {
+            "path": "temperature_rain_with_missing",
+            "estimated_total_time_steps": 22503748,
+            "assumed_actual_time_steps_75pct": 16877811,
+            "estimated_channels": 32072,
+            "size_mb": 90.03,
+            "cumulative_assumed_actual_time_steps": 143079058
+          },
+          {
+            "path": "PEMS07",
+            "estimated_total_time_steps": 24927283,
+            "assumed_actual_time_steps_75pct": 18695462,
+            "estimated_channels": 883,
+            "size_mb": 99.711,
+            "cumulative_assumed_actual_time_steps": 161774520
+          },
+          {
+            "path": "LOOP_SEATTLE",
+            "estimated_total_time_steps": 33955751,
+            "assumed_actual_time_steps_75pct": 25466813,
+            "estimated_channels": 323,
+            "size_mb": 135.825,
+            "cumulative_assumed_actual_time_steps": 187241333
+          },
+          {
+            "path": "china_air_quality",
+            "estimated_total_time_steps": 34440417,
+            "assumed_actual_time_steps_75pct": 25830313,
+            "estimated_channels": 2622,
+            "size_mb": 137.764,
+            "cumulative_assumed_actual_time_steps": 213071646
+          },
+          {
+            "path": "wiki-rolling_nips",
+            "estimated_total_time_steps": 40926210,
+            "assumed_actual_time_steps_75pct": 30694658,
+            "estimated_channels": 47675,
+            "size_mb": 163.725,
+            "cumulative_assumed_actual_time_steps": 243766304
+          },
+          {
+            "path": "kdd2022",
+            "estimated_total_time_steps": 47277240,
+            "assumed_actual_time_steps_75pct": 35457930,
+            "estimated_channels": 134,
+            "size_mb": 189.112,
+            "cumulative_assumed_actual_time_steps": 279224234
+          },
+          {
+            "path": "taxi_30min",
+            "estimated_total_time_steps": 55472166,
+            "assumed_actual_time_steps_75pct": 41604125,
+            "estimated_channels": 67984,
+            "size_mb": 221.917,
+            "cumulative_assumed_actual_time_steps": 320828359
+          },
+          {
+            "path": "subseasonal",
+            "estimated_total_time_steps": 56797826,
+            "assumed_actual_time_steps_75pct": 42598370,
+            "estimated_channels": 3448,
+            "size_mb": 227.194,
+            "cumulative_assumed_actual_time_steps": 363426729
+          },
+          {
+            "path": "m5",
+            "estimated_total_time_steps": 58706545,
+            "assumed_actual_time_steps_75pct": 44029909,
+            "estimated_channels": 30490,
+            "size_mb": 234.84,
+            "cumulative_assumed_actual_time_steps": 407456638
+          },
+          {
+            "path": "favorita_sales",
+            "estimated_total_time_steps": 140029049,
+            "assumed_actual_time_steps_75pct": 105021787,
+            "estimated_channels": 111840,
+            "size_mb": 560.163,
+            "cumulative_assumed_actual_time_steps": 512478425
+          },
+          {
+            "path": "london_smart_meters_with_missing",
+            "estimated_total_time_steps": 166277245,
+            "assumed_actual_time_steps_75pct": 124707934,
+            "estimated_channels": 5520,
+            "size_mb": 665.114,
+            "cumulative_assumed_actual_time_steps": 637186359
+          },
+          {
+            "path": "wind_farms_with_missing",
+            "estimated_total_time_steps": 172167449,
+            "assumed_actual_time_steps_75pct": 129125587,
+            "estimated_channels": 337,
+            "size_mb": 688.673,
+            "cumulative_assumed_actual_time_steps": 766311946
+          }
+        ],
+        "selected_paths": [
+          "cif_2016_6",
+          "m1_yearly",
+          "cif_2016_12",
+          "us_births",
+          "m1_quarterly",
+          "nn5_weekly",
+          "monash_m3_other",
+          "tourism_yearly",
+          "elecdemand",
+          "gfc14_load",
+          "elf",
+          "monash_m3_yearly",
+          "saugeenday",
+          "sceaux",
+          "vehicle_trips_with_missing",
+          "pdb",
+          "tourism_quarterly",
+          "monash_m3_quarterly",
+          "uber_tlc_daily",
+          "m1_monthly",
+          "covid_deaths",
+          "hospital",
+          "spain",
+          "sunspot_with_missing",
+          "fred_md",
+          "bitcoin_with_missing",
+          "nn5_daily_with_missing",
+          "borealis",
+          "favorita_transactions",
+          "smart",
+          "tourism_monthly",
+          "cockatoo",
+          "car_parts_with_missing",
+          "covid_mobility",
+          "monash_m3_monthly",
+          "cdc_fluview_who_nrevss",
+          "hierarchical_sales",
+          "covid19_energy",
+          "gfc17_load",
+          "godaddy",
+          "restaurant",
+          "cdc_fluview_ilinet",
+          "m4_hourly",
+          "m4_weekly",
+          "HZMETRO",
+          "SZ_TAXI",
+          "rideshare_with_missing",
+          "bdg-2_panther",
+          "m4_yearly",
+          "uber_tlc_hourly",
+          "ideal",
+          "project_tycho",
+          "bdg-2_bear",
+          "gfc12_load",
+          "bdg-2_fox",
+          "m4_quarterly",
+          "hog",
+          "bull",
+          "kdd_cup_2018_with_missing",
+          "pedestrian_counts",
+          "M_DENSE",
+          "beijing_air_quality",
+          "bdg-2_rat",
+          "SHMETRO",
+          "BEIJING_SUBWAY_30MIN",
+          "LOS_LOOP",
+          "wind_power",
+          "solar_power",
+          "PEMS08",
+          "PEMS03",
+          "lcl",
+          "subseasonal_precip",
+          "m4_daily",
+          "m4_monthly",
+          "PEMS04",
+          "PEMS_BAY",
+          "temperature_rain_with_missing",
+          "PEMS07",
+          "LOOP_SEATTLE",
+          "china_air_quality",
+          "wiki-rolling_nips",
+          "kdd2022",
+          "taxi_30min",
+          "subseasonal",
+          "m5",
+          "favorita_sales",
+          "london_smart_meters_with_missing",
+          "wind_farms_with_missing"
+        ],
+        "estimated_channels": 431818,
+        "estimated_total_time_steps": 1021749245,
+        "assumed_actual_time_steps_75pct": 766311946,
+        "difference_from_target": -83688054,
+        "difference_pct": -9.846,
+        "selected_size_mb": 4087.354,
+        "next_directory_if_added": "residential_pv_power",
+        "assumed_actual_steps_if_next_added": 1048326576
+      }
+    }
+  }
+}

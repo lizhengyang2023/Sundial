@@ -1,0 +1,13 @@
+{
+  "patch_size": 16,
+  "max_context": 64,
+  "horizon": 32,
+  "layers": 2,
+  "dim": 32,
+  "ff_dim": 64,
+  "heads": 4,
+  "flow_dim": 32,
+  "flow_layers": 2,
+  "flow_steps": 3,
+  "dropout": 0.0
+}

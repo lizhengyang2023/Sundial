@@ -1,4 +1,5 @@
 from pathlib import Path
+from types import SimpleNamespace
 import json
 
 import numpy as np
@@ -9,6 +10,7 @@ import torch
 import pytest
 
 import sundial.data as data
+import sundial.cli as cli
 from sundial.data import (BalancedCorpus, SundialIterableDataset, convert_source,
                           discover_files, extract_univariate)
 from sundial.model import Sundial, SundialConfig
@@ -118,11 +120,106 @@ def test_prepare_resumes_after_partial_file_failure(tmp_path: Path, monkeypatch)
         shard.write_bytes((output / "utsd" / split / "part-000000.parquet").read_bytes())
         progress["shards"][split].append({"path": f"{split}/{shard.name}", "rows": 1})
     progress_path.write_text(json.dumps(progress), encoding="utf-8")
+    (output / "utsd" / "manifest.json").write_text(
+        json.dumps({"shards": {"train": [], "validation": []}}), encoding="utf-8")
+
+    with data._prepare_lock(output / "utsd"):
+        with pytest.raises(RuntimeError, match="another prepare"):
+            convert_source("utsd", raw, output, shard_rows=1, max_file_retries=1)
 
     manifest = convert_source("utsd", raw, output, shard_rows=1, max_file_retries=1)
     assert manifest["train_series"] == manifest["validation_series"] == 4
     assert len(manifest["shards"]["train"]) == 4
     assert not progress_path.exists()
+    assert len(list((output / "utsd").glob("manifest.stale.*.json"))) == 1
+
+
+def test_prepare_selection_json_merges_directories_and_resumes(tmp_path: Path, monkeypatch):
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    values = np.arange(160, dtype=np.float32).tolist()
+    for name in ("first", "second"):
+        pq.write_table(pa.Table.from_pylist([{"id": name, "target": values}]),
+                       raw / f"{name}.parquet")
+    selection_path = tmp_path / "time_step_selection.json"
+    selection = {"sources": {"chronos": {
+        "repository": "owner/repo", "revision": "fixed-revision",
+        "selection": {"selected_paths": ["first", "second"]}}}}
+    selection_path.write_text(json.dumps(selection), encoding="utf-8")
+    roots = []
+
+    def discover(root, cache_dir, progress=None, revision=None):
+        roots.append((root, revision))
+        name = root.rsplit("/", 1)[-1]
+        progress.revision = revision
+        progress.save()
+        yield f"{name}/data.parquet", lambda name=name: raw / f"{name}.parquet"
+
+    failed_once = False
+
+    def rows(path, read_batch_size=64):
+        nonlocal failed_once
+        if path.name == "second.parquet" and not failed_once:
+            failed_once = True
+            raise OSError("simulated read failure")
+        yield from pq.read_table(path).to_pylist()
+
+    monkeypatch.setattr(data, "discover_hf_files", discover)
+    monkeypatch.setattr(data, "iter_rows", rows)
+    args = SimpleNamespace(source="chronos", input=str(selection_path),
+                           output=tmp_path / "corpus", shard_rows=1,
+                           read_batch_size=1, seed=42, train_fraction=0.9,
+                           clip_mad=10.0, hf_cache=tmp_path / "cache",
+                           resume=True, max_file_retries=1)
+    with pytest.raises(RuntimeError, match="1 file"):
+        cli.prepare(args)
+    progress_path = args.output / "chronos" / "progress.json"
+    progress = json.loads(progress_path.read_text(encoding="utf-8"))
+    assert progress["done"] == ["first/data.parquet"]
+    assert progress["revision"] == "fixed-revision"
+    assert progress["settings"]["inputs"] == [root for root, _ in roots]
+
+    manifest = cli.prepare(args)
+    assert manifest is None  # CLI prints the manifest.
+    saved = json.loads((args.output / "chronos" / "manifest.json").read_text(encoding="utf-8"))
+    assert saved["inputs"] == [root for root, _ in roots[:2]]
+    assert saved["revision"] == "fixed-revision"
+    assert saved["source_files"] == saved["train_series"] == saved["validation_series"] == 2
+    assert not progress_path.exists()
+    assert all(revision == "fixed-revision" for _, revision in roots)
+    corpus = BalancedCorpus(args.output, 16, 64, 32, sources=("chronos",))
+    assert corpus.sample(1, 0)["context"].shape[0] == 1
+
+
+def test_prepare_rejects_changed_selection_and_overlapping_inputs(tmp_path: Path, monkeypatch):
+    raw = tmp_path / "raw"
+    (raw / "nested").mkdir(parents=True)
+    with pytest.raises(ValueError, match="overlap"):
+        convert_source("lotsa", [str(raw), str(raw / "nested")], tmp_path / "corpus")
+
+    values = np.arange(160, dtype=np.float32).tolist()
+    for name in ("a", "b"):
+        folder = raw / name
+        folder.mkdir()
+        pq.write_table(pa.Table.from_pylist([{"target": values}]), folder / "data.parquet")
+
+    def interrupted(path, read_batch_size=64):
+        if path.parent.name == "b":
+            raise OSError("simulated read failure")
+        yield from pq.read_table(path).to_pylist()
+
+    monkeypatch.setattr(data, "iter_rows", interrupted)
+    output = tmp_path / "corpus"
+    inputs = [str(raw / "a"), str(raw / "b")]
+    with pytest.raises(RuntimeError, match="1 file"):
+        convert_source("lotsa", inputs, output, max_file_retries=1)
+    with pytest.raises(ValueError, match="settings differ"):
+        convert_source("lotsa", list(reversed(inputs)), output, max_file_retries=1)
+    monkeypatch.setattr(data, "iter_rows",
+                        lambda path, read_batch_size=64: iter(pq.read_table(path).to_pylist()))
+    manifest = convert_source("lotsa", inputs, output, max_file_retries=1)
+    assert manifest["source_files"] == manifest["train_series"] == 2
+    assert manifest["inputs"] == [str((raw / name).resolve()) for name in ("a", "b")]
 
 
 def test_decoder_is_causal():

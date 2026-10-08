@@ -66,12 +66,33 @@ def _load_model(path: Path, device: torch.device) -> tuple[Sundial, dict]:
 
 
 def prepare(args: argparse.Namespace) -> None:
-    manifest = convert_source(args.source, args.input, args.output,
+    inputs: str | list[str] = args.input
+    revision = None
+    if args.input.lower().endswith(".json"):
+        selection = json.loads(Path(args.input).read_text(encoding="utf-8"))
+        try:
+            selected = selection["sources"][args.source]
+            repository = selected["repository"]
+            revision = selected["revision"]
+            paths = selected["selection"]["selected_paths"]
+        except (KeyError, TypeError) as exc:
+            raise ValueError(f"invalid selection JSON for {args.source}: {args.input}") from exc
+        if (not isinstance(repository, str) or len(repository.split("/")) != 2
+                or not all(repository.split("/")) or not isinstance(revision, str)
+                or not revision or not isinstance(paths, list) or not paths):
+            raise ValueError(f"invalid selection JSON for {args.source}: {args.input}")
+        if any(not isinstance(path, str) or not path or path.startswith("/")
+               or "\\" in path or any(part in ("", ".", "..") for part in path.split("/"))
+               for path in paths):
+            raise ValueError("selected paths must be repository-relative directories")
+        inputs = [f"hf://datasets/{repository}/{path}" for path in paths]
+    manifest = convert_source(args.source, inputs, args.output,
                               shard_rows=args.shard_rows, read_batch_size=args.read_batch_size,
                               seed=args.seed,
                               train_fraction=args.train_fraction, clip_mad=args.clip_mad,
                               hf_cache=args.hf_cache, resume=args.resume,
-                              max_file_retries=args.max_file_retries)
+                              max_file_retries=args.max_file_retries,
+                              revision=revision)
     print(json.dumps(manifest, indent=2, ensure_ascii=False))
 
 
@@ -95,7 +116,7 @@ def train(args: argparse.Namespace) -> None:
                      "seed": args.seed}
     if state is not None and "data_settings" in state and state["data_settings"] != data_settings:
         raise ValueError("resume requires the same sources, batch size, accumulation, epoch length and seed")
-    corpus = BalancedCorpus(args.corpus, cfg.patch_size, cfg.max_context, cfg.horizon,
+    corpus = BalancedCorpus(args.data, cfg.patch_size, cfg.max_context, cfg.horizon,
                             seed=args.seed, sources=tuple(args.sources))
     dataset = SundialIterableDataset(corpus, args.batch_size,
                                      args.steps_per_epoch * args.accum, seed=args.seed)
@@ -230,7 +251,7 @@ def main() -> None:
     prep = sub.add_parser("prepare", help="convert one source to S3 Parquet")
     prep.add_argument("--source", choices=SOURCES, required=True)
     prep.add_argument("--input", required=True,
-                      help="local directory/file or hf://datasets/owner/repo/subdirectory")
+                      help="local directory/file, hf://datasets/owner/repo/subdirectory, or time_step_selection.json")
     prep.add_argument("--output", type=Path, default=Path("corpus"))
     prep.add_argument("--hf-cache", type=Path, default=Path(".cache/huggingface"))
     prep.add_argument("--shard-rows", type=int, default=128)
@@ -243,7 +264,8 @@ def main() -> None:
                       help="require a fresh output directory")
     prep.set_defaults(func=prepare)
     fit = sub.add_parser("train", help="train paper-level Sundial on balanced S3 corpus")
-    fit.add_argument("--corpus", type=Path, default=Path("corpus"))
+    fit.add_argument("--data", "--corpus", type=Path, default=Path("corpus"),
+                     help="prepared corpus root; reads <data>/<source>/manifest.json")
     fit.add_argument("--config", type=Path, help="JSON override; default is Sundial Base F=720")
     fit.add_argument("--resume", type=Path)
     fit.add_argument("--checkpoint", type=Path, default=Path("checkpoints/sundial-base.pt"))

@@ -37,12 +37,16 @@
 python -m pip install -e .
 python -m sundial.cli prepare --source utsd --input hf://datasets/thuml/UTSD/UTSD-1G --output corpus --hf-cache .cache/huggingface --read-batch-size 64
 
-# 其余来源在选择具体子目录后使用同一入口；不要直接对 800 GB 以上仓库执行全量 prepare。
+# 按 results/time_step_selection.json 中各来源的 selected_paths 合并转换，分别生成一份 manifest。
+python -m sundial.cli prepare --source chronos --input results/time_step_selection.json --output corpus
+python -m sundial.cli prepare --source lotsa --input results/time_step_selection.json --output corpus
+
+# 单个子目录的原有用法仍然可用；不要直接对 800 GB 以上仓库执行全量 prepare。
 # python -m sundial.cli prepare --source chronos --input hf://datasets/autogluon/chronos_datasets/<子目录> --output corpus
 # python -m sundial.cli prepare --source lotsa --input hf://datasets/Salesforce/lotsa_data/<子目录> --output corpus
 ```
 
-`prepare` 只发现 `.arrow`、`.parquet`，按文件下载并流式读取记录，转换后的序列攒满 `--shard-rows` 条就写一个 Parquet 分片。处理整个远端目录仍会依次下载其中全部匹配文件，因此先用 UTSD-1G 试验。训练时按来源等比例抽序列和随机滚动窗口，分片读取采用 LRU 缓存。异常值处理采用“训练段中位数 ±10 MAD 尺度”截断，缺失值以前向填充、开头以训练段中位数填充；这是工程选择，论文没有披露相同阈值或插补算法。`corpus/<source>/manifest.json` 记录转换条数与跳过数量，训练前应核对。
+`prepare` 只发现 `.arrow`、`.parquet`，按文件下载并流式读取记录，转换后的序列攒满 `--shard-rows` 条就写一个 Parquet 分片。传入选取结果 JSON 时，同一来源的多个目录共用一份断点和 manifest；重启时需保留相同的目录列表与参数。处理整个远端目录仍会依次下载其中全部匹配文件，因此先用 UTSD-1G 试验。训练时按来源等比例抽序列和随机滚动窗口，分片读取采用 LRU 缓存。异常值处理采用“训练段中位数 ±10 MAD 尺度”截断，缺失值以前向填充、开头以训练段中位数填充；这是工程选择，论文没有披露相同阈值或插补算法。`corpus/<source>/manifest.json` 记录转换条数与跳过数量，训练前应核对。
 
 ## 训练与评估命令
 

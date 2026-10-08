@@ -154,7 +154,7 @@ class Sundial(nn.Module):
         observed = torch.where(valid, context, torch.zeros_like(context))
         mean = observed.sum(-1, keepdim=True) / count
         var = torch.where(valid, (context - mean).square(), torch.zeros_like(context)).sum(-1, keepdim=True) / count
-        std = var.sqrt().clamp_min(1e-5)
+        std = var.sqrt().clamp_min(1e-4)
         normed = torch.where(valid, (context - mean) / std, torch.zeros_like(context))
         return normed, mean, std
 
@@ -184,7 +184,7 @@ class Sundial(nn.Module):
         eligible = patch_valid & target_mask.any(-1)
         if not eligible.any():
             raise ValueError("batch has no context patch with an observed future")
-        y = ((targets - mean[:, None]) / std[:, None])[eligible]
+        y = ((targets - mean[:, None]) / std[:, None])[eligible].clamp(-1, 1)
         m = target_mask[eligible]
         y = torch.where(m, y, torch.zeros_like(y))
         z = torch.randn_like(y)

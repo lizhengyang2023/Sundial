@@ -206,7 +206,7 @@ def normalize_per_series(values: np.ndarray, train_fraction: float,
     lower, upper = median - clip_mad * robust_std, median + clip_mad * robust_std
     train = _clean_split(values[:cut], lower, upper, median)
     valid = _clean_split(values[cut:], lower, upper, median)
-    mean, std = float(train.mean()), max(float(train.std()), 1e-6)
+    mean, std = float(train.mean()), max(float(train.std()), 1e-4)
     return ((train - mean) / std).astype(np.float32), ((valid - mean) / std).astype(np.float32)
 
 
@@ -571,13 +571,15 @@ class BalancedCorpus:
         return np.asarray(self.cache[path][idx - offset]["values"], dtype=np.float32)
 
     def _cut_window(self, series: np.ndarray) -> tuple[np.ndarray, np.ndarray] | None:
+        # At least 4 patches so instance-norm std is less likely to collapse on short/flat windows.
+        min_patches = 4
         full_future = len(series) >= self.patch_size + self.horizon
         reserve = self.horizon if full_future else 1
         available = min(len(series) - reserve, self.max_context)
         max_patches = available // self.patch_size
-        if max_patches < 1:
+        if max_patches < min_patches:
             return None
-        context_len = self.rng.randint(1, max_patches) * self.patch_size
+        context_len = self.rng.randint(min_patches, max_patches) * self.patch_size
         start = self.rng.randint(0, len(series) - context_len - reserve)
         stop = start + context_len
         return series[start:stop], series[stop:stop + self.horizon]

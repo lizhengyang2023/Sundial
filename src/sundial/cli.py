@@ -9,6 +9,7 @@ from torch.amp.grad_scaler import GradScaler
 import json
 from pathlib import Path
 import random
+import time
 
 import numpy as np
 import pandas as pd
@@ -65,6 +66,56 @@ def _load_model(path: Path, device: torch.device) -> tuple[Sundial, dict]:
     return model.to(device), state
 
 
+@torch.no_grad()
+def _split_metrics(model: Sundial, corpus: BalancedCorpus, *, batch_size: int,
+                   batches: int, device: torch.device, seed: int) -> dict:
+    """Average flow loss and point-forecast MAE/MSE over a few sampled batches."""
+    was_training = model.training
+    rng_state = torch.get_rng_state()
+    cuda_state = torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None
+    model.eval()
+    horizon = model.cfg.horizon
+    flow_sum = mae_sum = mse_sum = 0.0
+    point_count = 0
+    try:
+        for i in range(batches):
+            corpus.rng.seed(seed + i)
+            torch.manual_seed(seed + i)
+            batch = {k: v.to(device) for k, v in corpus.sample(batch_size, i).items()}
+            flow_sum += float(model.training_loss(**batch).item())
+            pred = model.forecast(batch["context"], horizon, samples=1,
+                                  valid=batch["context_valid"]).mean(1)
+            start = batch["context"].shape[1]
+            truth = batch["full_values"][:, start:start + horizon]
+            mask = batch["full_valid"][:, start:start + horizon]
+            if truth.shape[1] < horizon:
+                pad = horizon - truth.shape[1]
+                truth = torch.nn.functional.pad(truth, (0, pad))
+                mask = torch.nn.functional.pad(mask, (0, pad))
+            error = pred - truth
+            mae_sum += float((error.abs() * mask).sum().item())
+            mse_sum += float((error.square() * mask).sum().item())
+            point_count += int(mask.sum().item())
+    finally:
+        torch.set_rng_state(rng_state)
+        if cuda_state is not None:
+            torch.cuda.set_rng_state_all(cuda_state)
+        if was_training:
+            model.train()
+    return {"flow_loss": flow_sum / batches,
+            "mae": mae_sum / max(point_count, 1),
+            "mse": mse_sum / max(point_count, 1),
+            "eval_batches": batches,
+            "eval_points": point_count}
+
+
+def _write_losses(path: Path, payload: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(path)
+
+
 def prepare(args: argparse.Namespace) -> None:
     inputs: str | list[str] = args.input
     revision = None
@@ -97,8 +148,10 @@ def prepare(args: argparse.Namespace) -> None:
 
 
 def train(args: argparse.Namespace) -> None:
-    if min(args.steps, args.steps_per_epoch, args.batch_size, args.accum) < 1 or args.workers < 0:
-        raise ValueError("steps, steps_per_epoch, batch_size and accum must be positive; workers cannot be negative")
+    if min(args.steps, args.steps_per_epoch, args.batch_size, args.accum,
+           args.eval_batches) < 1 or args.workers < 0:
+        raise ValueError("steps, steps_per_epoch, batch_size, accum and eval_batches must be "
+                         "positive; workers cannot be negative")
     _seed(args.seed)
     device = _device(args.device)
     if args.resume:
@@ -116,8 +169,25 @@ def train(args: argparse.Namespace) -> None:
                      "seed": args.seed}
     if state is not None and "data_settings" in state and state["data_settings"] != data_settings:
         raise ValueError("resume requires the same sources, batch size, accumulation, epoch length and seed")
+    run_settings = {
+        "data": str(args.data), "config": str(args.config) if args.config else None,
+        "checkpoint": str(args.checkpoint), "losses_json": str(args.losses_json),
+        "steps": args.steps, "steps_per_epoch": args.steps_per_epoch,
+        "sources": list(args.sources), "batch_size": args.batch_size, "accum": args.accum,
+        "workers": args.workers, "lr": args.lr, "weight_decay": args.weight_decay,
+        "warmup": args.warmup, "min_lr_ratio": args.min_lr_ratio, "clip_grad": args.clip_grad,
+        "seed": args.seed, "device": str(device), "eval_batches": args.eval_batches,
+        "model": cfg.to_dict(),
+        "effective_batch_size": args.batch_size * args.accum,
+        "planned_epochs": (args.steps + args.steps_per_epoch - 1) // args.steps_per_epoch,
+    }
+    print(json.dumps({"train_settings": run_settings}, indent=2, ensure_ascii=False), flush=True)
     corpus = BalancedCorpus(args.data, cfg.patch_size, cfg.max_context, cfg.horizon,
                             seed=args.seed, sources=tuple(args.sources))
+    # Validation tails are ~10% of each series; allow shorter windows so metrics still run.
+    val_corpus = BalancedCorpus(args.data, cfg.patch_size, cfg.max_context, cfg.horizon,
+                                seed=args.seed, sources=tuple(args.sources),
+                                split="validation", min_patches=1)
     dataset = SundialIterableDataset(corpus, args.batch_size,
                                      args.steps_per_epoch * args.accum, seed=args.seed)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
@@ -140,6 +210,15 @@ def train(args: argparse.Namespace) -> None:
             torch.set_rng_state(state["torch_rng"])
         if state.get("cuda_rng") is not None and torch.cuda.is_available():
             torch.cuda.set_rng_state_all(state["cuda_rng"])
+    if args.resume and args.losses_json.exists():
+        losses_log = json.loads(args.losses_json.read_text(encoding="utf-8"))
+        if "epochs" not in losses_log:
+            losses_log = {"settings": run_settings, "epochs": []}
+        else:
+            losses_log["settings"] = run_settings
+    else:
+        losses_log = {"settings": run_settings, "epochs": []}
+    _write_losses(args.losses_json, losses_log)
     model.train()
     step = first_step
     while step < args.steps:
@@ -154,6 +233,8 @@ def train(args: argparse.Namespace) -> None:
         loader = DataLoader(dataset, **loader_options)
         batches = iter(loader)
         until = min(args.steps, (epoch + 1) * args.steps_per_epoch)
+        epoch_begin = step
+        epoch_t0 = time.perf_counter()
         while step < until:
             optimizer.zero_grad(set_to_none=True)
             running = 0.0
@@ -175,6 +256,30 @@ def train(args: argparse.Namespace) -> None:
             if step % args.save_every == 0 or step == args.steps:
                 _checkpoint(args.checkpoint, model, optimizer, scheduler, scaler, step, data_settings)
         del batches, loader
+        epoch_seconds = time.perf_counter() - epoch_t0
+        steps_this_epoch = step - epoch_begin
+        seconds_per_step = epoch_seconds / steps_this_epoch if steps_this_epoch else 0.0
+        train_metrics = _split_metrics(model, corpus, batch_size=args.batch_size,
+                                       batches=args.eval_batches, device=device,
+                                       seed=args.seed + 10_000_000 + epoch)
+        val_metrics = _split_metrics(model, val_corpus, batch_size=args.batch_size,
+                                     batches=args.eval_batches, device=device,
+                                     seed=args.seed + 20_000_000 + epoch)
+        record = {
+            "epoch": epoch,
+            "step": step,
+            "steps_this_epoch": steps_this_epoch,
+            "epoch_seconds": round(epoch_seconds, 4),
+            "seconds_per_step": round(seconds_per_step, 4),
+            "lr": scheduler.get_last_lr()[0],
+            "train": train_metrics,
+            "validation": val_metrics,
+        }
+        print(json.dumps(record, ensure_ascii=False), flush=True)
+        losses_log["epochs"] = [row for row in losses_log["epochs"] if row.get("epoch") != epoch]
+        losses_log["epochs"].append(record)
+        losses_log["epochs"].sort(key=lambda row: row["epoch"])
+        _write_losses(args.losses_json, losses_log)
 
 
 def _split_borders(name: str, length: int, context: int) -> tuple[int, int, int]:
@@ -285,6 +390,10 @@ def main() -> None:
     fit.add_argument("--save-every", type=int, default=1000)
     fit.add_argument("--seed", type=int, default=42)
     fit.add_argument("--device", default="auto")
+    fit.add_argument("--losses-json", type=Path, default=Path("checkpoints/losses.json"),
+                     help="append per-epoch train/validation metrics and timing here")
+    fit.add_argument("--eval-batches", type=int, default=8,
+                     help="batches sampled for end-of-epoch MAE/MSE/flow-loss metrics")
     fit.set_defaults(func=train)
     ev = sub.add_parser("evaluate", help="ETT/Weather zero-shot point forecasting")
     ev.add_argument("--checkpoint", type=Path, required=True)

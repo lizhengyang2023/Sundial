@@ -530,13 +530,15 @@ class BalancedCorpus:
 
     def __init__(self, root: Path, patch_size: int, max_context: int, horizon: int,
                  seed: int = 42, split: str = "train", cache_shards: int = 8,
-                 sources: tuple[str, ...] = SOURCES):
+                 sources: tuple[str, ...] = SOURCES, min_patches: int = 4):
         if not sources or len(set(sources)) != len(sources) or any(s not in SOURCES for s in sources):
             raise ValueError(f"sources must be a nonempty subset of {SOURCES}")
-        if cache_shards < 1 or patch_size < 1 or max_context < patch_size or horizon < 1:
+        if (cache_shards < 1 or patch_size < 1 or max_context < patch_size or horizon < 1
+                or min_patches < 1):
             raise ValueError("invalid sampling parameters")
         self.root, self.patch_size = root, patch_size
         self.max_context, self.horizon = max_context, horizon
+        self.min_patches = min_patches
         self.source_names = sources
         self.rng = random.Random(seed)
         self.sources: dict[str, tuple[list[dict], list[int], int]] = {}
@@ -571,15 +573,14 @@ class BalancedCorpus:
         return np.asarray(self.cache[path][idx - offset]["values"], dtype=np.float32)
 
     def _cut_window(self, series: np.ndarray) -> tuple[np.ndarray, np.ndarray] | None:
-        # At least 4 patches so instance-norm std is less likely to collapse on short/flat windows.
-        min_patches = 4
+        # Default min_patches=4 limits short/flat windows that collapse instance-norm std.
         full_future = len(series) >= self.patch_size + self.horizon
         reserve = self.horizon if full_future else 1
         available = min(len(series) - reserve, self.max_context)
         max_patches = available // self.patch_size
-        if max_patches < min_patches:
+        if max_patches < self.min_patches:
             return None
-        context_len = self.rng.randint(min_patches, max_patches) * self.patch_size
+        context_len = self.rng.randint(self.min_patches, max_patches) * self.patch_size
         start = self.rng.randint(0, len(series) - context_len - reserve)
         stop = start + context_len
         return series[start:stop], series[stop:stop + self.horizon]

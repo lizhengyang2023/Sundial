@@ -31,7 +31,7 @@
 
 ## 下载和转换
 
-数据来源：[UTSD](https://huggingface.co/datasets/thuml/UTSD)、[Chronos datasets](https://huggingface.co/datasets/autogluon/chronos_datasets)、[LOTSA](https://huggingface.co/datasets/Salesforce/lotsa_data)。现在可用 `hf://datasets/组织/仓库/子目录` 输入：远端目录按页枚举，仅取 `.arrow` / `.parquet`，处理到某个文件时才下载它到 `--hf-cache`。本地目录也用迭代式文件发现，忽略 JSON。UTSD 先指定 `UTSD-1G`，避免把 1G/2G/4G/12G 层级重复计数。Chronos 的 `train` 分片可能包含整条时序，不能凭分片名认定已剔除 ETT 测试段；仍需审查来源目录与条目 ID。
+数据来源：[UTSD](https://huggingface.co/datasets/thuml/UTSD)、[Chronos datasets](https://huggingface.co/datasets/autogluon/chronos_datasets)、[LOTSA](https://huggingface.co/datasets/Salesforce/lotsa_data)。现在可用 `hf://datasets/组织/仓库/子目录` 输入：远端目录按页枚举，仅取 `.arrow` / `.parquet`，处理到某个文件时才下载它到 `--hf-cache`。本地目录也用迭代式文件发现，忽略 JSON。UTSD 先指定 `UTSD-1G`，避免把 1G/2G/4G/12G 层级重复计数。Chronos 的 `train` 分片可能包含整条时序，不能凭分片名认定已剔除 ETT 测试段；仍需审查来源目录与条目 ID。然后采用UTSD-12G的完整数据集
 
 ```powershell
 python -m pip install -e .
@@ -54,6 +54,8 @@ python -m sundial.cli prepare --source lotsa --input results/time_step_selection
 # 先只用 UTSD-1G 验证数据与训练链路；批大小可为任意正整数。
 python -m sundial.cli train --corpus corpus --sources utsd --steps 100 --batch-size 6 --workers 2 --checkpoint checkpoints/utsd-pilot.pt
 
+# 
+
 # 三源准备完成后，默认按 1:1:1 抽样；多 worker 并行生成 batch。
 python -m sundial.cli train --corpus corpus --steps 100000 --batch-size 6 --accum 4 --checkpoint checkpoints/sundial-base.pt
 
@@ -67,6 +69,14 @@ python -m sundial.cli evaluate --checkpoint checkpoints/sundial-base.pt --data d
 评估使用 Time-Series-Library 常见的 ETT 固定时间边界与 Weather 70%/10%/20% 边界；每个变量用该测评数据的训练段统计量标准化，报告标准化尺度的 MSE/MAE。评估窗口不参与模型更新；`--stride 1` 遍历所有可用测试窗口，代价较高，初次检查可把 stride 调大。采样 `--samples 20` 时，点预测采用生成样本的均值；论文没有清楚规定表 1 的所有点预测聚合细节，因此应在比较成绩时固定并注明这个选择。当前脚本只实现请求的五个数据集和 MSE/MAE，没有 GIFT-Eval/FEV 的概率指标。
 
 建议的验收次序：检查三个 manifest 的数据条数和泄漏过滤情况 → 小配置跑通一个 batch 并确认损失有限、参数更新 → 用少量测试窗口核对输出形状与逆归一化 → 开始完整预训练 → 用上述固定设置输出 5×4 组 MSE/MAE。若更换语料子集、训练步数或抽样方式，应保存命令、随机种子与数据版本，避免和论文的原始 1032B 结果混称。
+
+## 训练与评估结果
+
+复现过程中，采用chronos和lotsa的部分子集，语料与论文中的具体实现相比少一些；因此结果不代表论文的完全复现。
+
+训练期间局部存在波动，个人推测是不同领域语料加入导致。整体mae和mse损失逐步下降，flow-loss直接评估预测速度，仅作调试信息，不作为最终性能考量。
+
+[training-result](../results/sundial/train-eval/loss_curves.png)
 
 ## 相关资源
 

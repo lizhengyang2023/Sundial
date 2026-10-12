@@ -1,0 +1,185 @@
+{
+  "checkpoint_step": 100000,
+  "results": [
+    {
+      "dataset": "ETTh1",
+      "horizon": 96,
+      "mse": 0.5853289791545502,
+      "mae": 0.5411805906032038,
+      "windows_x_channels": 2037,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTh1",
+      "horizon": 192,
+      "mse": 0.6370793110294766,
+      "mae": 0.5751275915802617,
+      "windows_x_channels": 2002,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTh1",
+      "horizon": 336,
+      "mse": 0.6861423127690756,
+      "mae": 0.6050383502097147,
+      "windows_x_channels": 1953,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTh1",
+      "horizon": 720,
+      "mse": 0.7672015804612433,
+      "mae": 0.6486939474252554,
+      "windows_x_channels": 1820,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTh2",
+      "horizon": 96,
+      "mse": 0.3875194825976316,
+      "mae": 0.44263824802474216,
+      "windows_x_channels": 2037,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTh2",
+      "horizon": 192,
+      "mse": 0.4907648401947882,
+      "mae": 0.5014332842120242,
+      "windows_x_channels": 2002,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTh2",
+      "horizon": 336,
+      "mse": 0.5694710732354591,
+      "mae": 0.5448183906286743,
+      "windows_x_channels": 1953,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTh2",
+      "horizon": 720,
+      "mse": 0.728528467982419,
+      "mae": 0.6246355344145872,
+      "windows_x_channels": 1820,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTm1",
+      "horizon": 96,
+      "mse": 0.6224482151589474,
+      "mae": 0.513729892060484,
+      "windows_x_channels": 8232,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTm1",
+      "horizon": 192,
+      "mse": 0.6673067502122012,
+      "mae": 0.5408482473236205,
+      "windows_x_channels": 8197,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTm1",
+      "horizon": 336,
+      "mse": 0.707611101775745,
+      "mae": 0.5634902809680443,
+      "windows_x_channels": 8148,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTm1",
+      "horizon": 720,
+      "mse": 0.7852616789373499,
+      "mae": 0.6012417628557376,
+      "windows_x_channels": 8015,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTm2",
+      "horizon": 96,
+      "mse": 0.23159523317005556,
+      "mae": 0.32789953020656226,
+      "windows_x_channels": 8232,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTm2",
+      "horizon": 192,
+      "mse": 0.2742768982954995,
+      "mae": 0.3576090545750475,
+      "windows_x_channels": 8197,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTm2",
+      "horizon": 336,
+      "mse": 0.3062771771474106,
+      "mae": 0.3783204751086385,
+      "windows_x_channels": 8148,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "ETTm2",
+      "horizon": 720,
+      "mse": 0.35300060180510945,
+      "mae": 0.40772138949234454,
+      "windows_x_channels": 8015,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "weather",
+      "horizon": 96,
+      "mse": 0.21571485683130293,
+      "mae": 0.2658010874428718,
+      "windows_x_channels": 10983,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "weather",
+      "horizon": 192,
+      "mse": 0.26001207780197166,
+      "mae": 0.306062363421003,
+      "windows_x_channels": 10878,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "weather",
+      "horizon": 336,
+      "mse": 0.3001818773407747,
+      "mae": 0.3364556087366244,
+      "windows_x_channels": 10731,
+      "stride": 20,
+      "samples": 20
+    },
+    {
+      "dataset": "weather",
+      "horizon": 720,
+      "mse": 0.3376746335120069,
+      "mae": 0.3627260922595917,
+      "windows_x_channels": 10332,
+      "stride": 20,
+      "samples": 20
+    }
+  ]
+}

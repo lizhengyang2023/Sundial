@@ -81,28 +81,42 @@ def draw_zero_shot_compare(a: dict[tuple[str, int], dict[str, float]],
                            b: dict[tuple[str, int], dict[str, float]],
                            output: Path, label_a: str, label_b: str,
                            title: str | None = None) -> None:
-    """Grouped bars for MSE/MAE over shared (dataset, horizon) keys."""
-    keys = sorted(set(a) & set(b), key=lambda k: (k[0], k[1]))
-    if not keys:
+    """4x2 grid: rows=horizons (96/192/336/720), cols=mse/mae; bars by dataset."""
+    shared = set(a) & set(b)
+    if not shared:
         raise ValueError("no shared (dataset, horizon) entries to compare")
-    labels = [f"{ds}\nH={h}" for ds, h in keys]
-    x = np.arange(len(keys))
+    horizons = sorted({h for _, h in shared})
+    datasets = sorted({ds for ds, _ in shared})
     width = 0.36
+    x = np.arange(len(datasets))
 
-    fig, axes = plt.subplots(len(ZS_METRICS), 1, figsize=(max(8, 0.55 * len(keys)), 3.4 * len(ZS_METRICS)),
-                             sharex=True)
-    if len(ZS_METRICS) == 1:
-        axes = [axes]
-    for ax, metric in zip(axes, ZS_METRICS):
-        ya = [a[k][metric] for k in keys]
-        yb = [b[k][metric] for k in keys]
-        ax.bar(x - width / 2, ya, width, label=label_a)
-        ax.bar(x + width / 2, yb, width, label=label_b)
-        ax.set_ylabel(metric)
-        ax.grid(True, axis="y", alpha=0.3)
-        ax.legend()
-    axes[-1].set_xticks(x, labels, rotation=0)
-    axes[-1].set_xlabel("dataset / horizon")
+    fig, axes = plt.subplots(
+        len(horizons), len(ZS_METRICS),
+        figsize=(4.2 * len(ZS_METRICS), 2.6 * len(horizons)),
+        sharex="col", squeeze=False,
+    )
+    for i, horizon in enumerate(horizons):
+        for j, metric in enumerate(ZS_METRICS):
+            ax = axes[i, j]
+            ya, yb = [], []
+            for ds in datasets:
+                key = (ds, horizon)
+                if key not in shared:
+                    ya.append(np.nan)
+                    yb.append(np.nan)
+                else:
+                    ya.append(a[key][metric])
+                    yb.append(b[key][metric])
+            ax.bar(x - width / 2, ya, width, label=label_a)
+            ax.bar(x + width / 2, yb, width, label=label_b)
+            ax.set_title(f"H={horizon}  {metric}")
+            ax.grid(True, axis="y", alpha=0.3)
+            if i == 0 and j == len(ZS_METRICS) - 1:
+                ax.legend(loc="upper right", fontsize=8)
+            if j == 0:
+                ax.set_ylabel(metric)
+            if i == len(horizons) - 1:
+                ax.set_xticks(x, datasets, rotation=30, ha="right")
     fig.suptitle(title or "Zero-shot comparison")
     fig.tight_layout()
     output.parent.mkdir(parents=True, exist_ok=True)
